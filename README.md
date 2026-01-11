@@ -16,6 +16,7 @@ A minimalist, high-end landing page for KEM, an IT automation company, built wit
 - Micro-interactions on hover states
 - Mathematical grid system (8px/12px base)
 - Generous section padding (100px+)
+- Automatic logo background removal using Canvas API
 
 ## Getting Started
 
@@ -47,8 +48,9 @@ npm run preview
 
 ```
 kem_llc/
-├── images/
-│   └── logo.jpg
+├── public/
+│   └── images/
+│       └── logo.jpg
 ├── src/
 │   ├── components/
 │   │   ├── Navigation.jsx
@@ -56,6 +58,8 @@ kem_llc/
 │   │   ├── Philosophy.jsx
 │   │   ├── Features.jsx
 │   │   └── Footer.jsx
+│   ├── utils/
+│   │   └── removeLogoBackground.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
@@ -65,4 +69,3 @@ kem_llc/
 ├── vite.config.js
 └── postcss.config.js
 ```
-
