@@ -10,12 +10,12 @@ const Features = () => {
   })
 
   const capabilities = [
-    { title: 'Infrastructure as Code', icon: '⚡' },
-    { title: 'CI/CD Pipeline Automation', icon: '🔄' },
-    { title: 'Cloud Orchestration', icon: '☁️' },
-    { title: 'Monitoring & Observability', icon: '📊' },
-    { title: 'Security Automation', icon: '🔒' },
-    { title: 'DevOps Transformation', icon: '🚀' },
+    { title: 'AI Automation', icon: '🤖' },
+    { title: 'Web Development', icon: '🌐' },
+    { title: 'Reputation Management', icon: '⭐' },
+    { title: 'Cloud Infrastructure', icon: '☁️' },
+    { title: 'Security & Compliance', icon: '🔒' },
+    { title: 'Data Analytics', icon: '📊' },
   ]
 
   // Bento Grid layout
@@ -48,7 +48,7 @@ const Features = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-5xl md:text-6xl font-bold text-stark-white tracking-tight text-center">
-            Technical Automation<br />Capabilities
+            Our Core<br />Capabilities
           </h2>
         </motion.div>
 

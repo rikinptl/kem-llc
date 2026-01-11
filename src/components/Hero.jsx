@@ -51,13 +51,13 @@ const Hero = () => {
             }}
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            Intelligence,<br />
+            Digital Excellence,<br />
             <motion.span
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              Uncomplicated
+              Automated
             </motion.span>
           </motion.h1>
 
@@ -68,7 +68,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
-            Architectural precision in IT automation. We streamline complexity into performance.
+            Transforming businesses with AI front desk assistants, professional web presence, and automated reputation management.
           </motion.p>
 
           {/* Magnetic CTA Button */}
