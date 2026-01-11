@@ -10,42 +10,42 @@ const AIVoiceAgent = () => {
   const benefits = [
     {
       title: '24/7 Availability',
-      description: 'Provide round-the-clock customer support without additional staffing costs. Your AI voice agent never needs breaks, holidays, or sleep.',
+      description: 'Never miss a call. Your AI front desk assistant can answer, triage, and take messages around the clock.',
       icon: '⏰',
     },
     {
-      title: 'Cost Efficiency',
-      description: 'Reduce operational costs by automating routine inquiries and handling multiple calls simultaneously without human intervention.',
+      title: 'Instant Call Answering',
+      description: 'Eliminate long hold times with immediate pickup, smart greetings, and fast routing to the right place.',
       icon: '💰',
     },
     {
-      title: 'Instant Response',
-      description: 'Deliver immediate responses to customer queries, eliminating wait times and improving customer satisfaction scores.',
+      title: 'Appointment Scheduling',
+      description: 'Book, reschedule, and confirm appointments automatically using your availability and business rules.',
       icon: '⚡',
     },
     {
-      title: 'Multilingual Support',
-      description: 'Communicate with customers in multiple languages, breaking down language barriers and expanding your global reach.',
+      title: 'Lead Capture & Qualification',
+      description: 'Collect key details, qualify intent, and hand off warm leads to your team with complete context.',
       icon: '🌍',
     },
     {
-      title: 'Consistent Quality',
-      description: 'Ensure every customer interaction maintains the same high standard of service, free from human error or mood variations.',
+      title: 'Consistent Customer Experience',
+      description: 'Deliver the same on-brand messaging every time—no missed steps, forgotten questions, or rushed calls.',
       icon: '✨',
     },
     {
       title: 'Scalable Operations',
-      description: 'Handle thousands of concurrent calls without the need for additional infrastructure or personnel.',
+      description: 'Handle peak call volume and multiple simultaneous conversations without adding headcount.',
       icon: '📈',
     },
     {
       title: 'Data Insights',
-      description: 'Gather valuable analytics from every interaction, providing insights into customer behavior and preferences.',
+      description: 'Track call reasons, outcomes, missed opportunities, and common questions to improve operations.',
       icon: '📊',
     },
     {
       title: 'Integration Ready',
-      description: 'Seamlessly integrate with your existing CRM, ticketing systems, and business workflows.',
+      description: 'Connect calendars, CRMs, ticketing tools, and workflows so every call becomes an actionable record.',
       icon: '🔗',
     },
   ]
@@ -65,10 +65,10 @@ const AIVoiceAgent = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-midnight-blue tracking-tight mb-4">
-            AI Voice Agent
+            AI Front Desk Assistant
           </h2>
           <p className="text-slate-silver text-lg font-light max-w-2xl mx-auto">
-            Intelligent voice automation that transforms customer interactions
+            Answer calls, book appointments, and capture leads—automatically.
           </p>
         </motion.div>
 
@@ -94,7 +94,7 @@ const AIVoiceAgent = () => {
                 </div>
                 <div className="text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-midnight-blue mb-2">
-                    Intelligent Voice Automation
+                    AI Front Desk Assistant
                   </h3>
                   <p className="text-slate-silver font-light">
                     {isExpanded ? 'Click to collapse' : 'Click to explore benefits'}
@@ -131,9 +131,9 @@ const AIVoiceAgent = () => {
                       transition={{ delay: 0.1 }}
                     >
                       <p className="text-lg text-charcoal leading-relaxed mb-6">
-                        Our AI Voice Agent leverages cutting-edge natural language processing and machine learning 
-                        to deliver human-like conversations at scale. Whether handling customer support, lead qualification, 
-                        appointment scheduling, or technical assistance, our solution adapts to your business needs.
+                        Our AI Front Desk Assistant uses modern conversational AI to handle calls the way a great receptionist would:
+                        answer questions, route requests, take messages, and schedule appointments. It captures the right details and
+                        keeps your team focused on high-value work.
                       </p>
                     </motion.div>
 
@@ -176,9 +176,9 @@ const AIVoiceAgent = () => {
                             Customized for Your Business
                           </h4>
                           <p className="text-white/90 font-light">
-                            We can customize the AI Voice Agent to match your brand voice, integrate with your systems, 
-                            and handle your specific use cases. From industry-specific terminology to personalized workflows, 
-                            we'll tailor the solution to your exact requirements.
+                            We can customize the AI Front Desk Assistant to match your brand voice, business hours, and call flows,
+                            and integrate with your systems. From appointment types to escalation rules, we’ll tailor the experience
+                            to your exact requirements.
                           </p>
                         </div>
                         <Link to="/contact">
