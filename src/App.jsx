@@ -3,6 +3,7 @@ import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import Philosophy from './components/Philosophy'
 import Features from './components/Features'
+import Infrastructure from './components/Infrastructure'
 import Footer from './components/Footer'
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Navigation />
       <Hero />
       <Philosophy />
+      <Infrastructure />
       <Features />
       <Footer />
     </div>
