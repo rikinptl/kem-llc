@@ -3,12 +3,12 @@ import { removeLogoBackground } from '../utils/removeLogoBackground'
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [logoSrc, setLogoSrc] = useState('/images/logo.jpg')
+  const [logoSrc, setLogoSrc] = useState('/images/image.png')
   const logoProcessed = useRef(false)
 
   useEffect(() => {
     if (!logoProcessed.current) {
-      removeLogoBackground('/images/logo.jpg', (processedSrc) => {
+      removeLogoBackground('/images/image.png', (processedSrc) => {
         setLogoSrc(processedSrc)
         logoProcessed.current = true
       })
@@ -18,13 +18,13 @@ const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-stark-white/95 backdrop-blur-sm border-b border-slate-silver/20">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-24 md:h-28">
           {/* Logo */}
           <div className="flex items-center">
             <img 
               src={logoSrc} 
               alt="KEM Logo" 
-              className="h-10 w-auto"
+              className="h-16 md:h-20 w-auto"
             />
           </div>
           
