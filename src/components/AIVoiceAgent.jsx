@@ -10,7 +10,7 @@ const AIVoiceAgent = () => {
   const benefits = [
     {
       title: '24/7 Availability',
-      description: 'Provide round-the-clock customer support without additional staffing costs. Your AI voice agent never needs breaks, holidays, or sleep.',
+      description: 'Provide round-the-clock reception services without additional staffing costs. Your AI front desk assistant never needs breaks, holidays, or sleep.',
       icon: '⏰',
     },
     {
@@ -65,10 +65,10 @@ const AIVoiceAgent = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-midnight-blue tracking-tight mb-4">
-            AI Voice Agent
+            AI Front Desk Assistant
           </h2>
           <p className="text-slate-silver text-lg font-light max-w-2xl mx-auto">
-            Intelligent voice automation that transforms customer interactions
+            Your virtual receptionist that handles calls, schedules appointments, and greets customers 24/7
           </p>
         </motion.div>
 
@@ -90,11 +90,11 @@ const AIVoiceAgent = () => {
             >
               <div className="flex items-center gap-6">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent-teal/20 to-accent-cyan/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-3xl">🎤</span>
+                  <span className="text-3xl">🏢</span>
                 </div>
                 <div className="text-left">
                   <h3 className="text-2xl md:text-3xl font-bold text-midnight-blue mb-2">
-                    Intelligent Voice Automation
+                    AI Front Desk Assistant
                   </h3>
                   <p className="text-slate-silver font-light">
                     {isExpanded ? 'Click to collapse' : 'Click to explore benefits'}
@@ -131,9 +131,9 @@ const AIVoiceAgent = () => {
                       transition={{ delay: 0.1 }}
                     >
                       <p className="text-lg text-charcoal leading-relaxed mb-6">
-                        Our AI Voice Agent leverages cutting-edge natural language processing and machine learning 
-                        to deliver human-like conversations at scale. Whether handling customer support, lead qualification, 
-                        appointment scheduling, or technical assistance, our solution adapts to your business needs.
+                        Our AI Front Desk Assistant leverages cutting-edge natural language processing and machine learning 
+                        to deliver human-like conversations at scale. Whether greeting visitors, answering calls, scheduling 
+                        appointments, or directing inquiries, our solution becomes your tireless virtual receptionist.
                       </p>
                     </motion.div>
 
@@ -176,7 +176,7 @@ const AIVoiceAgent = () => {
                             Customized for Your Business
                           </h4>
                           <p className="text-white/90 font-light">
-                            We can customize the AI Voice Agent to match your brand voice, integrate with your systems, 
+                            We can customize the AI Front Desk Assistant to match your brand voice, integrate with your systems, 
                             and handle your specific use cases. From industry-specific terminology to personalized workflows, 
                             we'll tailor the solution to your exact requirements.
                           </p>
