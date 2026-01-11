@@ -75,26 +75,6 @@ const Hero = () => {
           <MagneticButton />
         </motion.div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-        initial={{ opacity: 1 }}
-        animate={{ opacity: [1, 0.5, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <motion.div
-          className="w-6 h-10 border-2 border-midnight-blue rounded-full flex justify-center p-2"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          <motion.div
-            className="w-1 h-3 bg-midnight-blue rounded-full"
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-        </motion.div>
-      </motion.div>
     </section>
   )
 }
