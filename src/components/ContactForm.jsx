@@ -25,27 +25,14 @@ const ContactForm = () => {
     setSubmitStatus(null)
 
     try {
-      // Check if backend is reachable first
-      try {
-        const healthCheck = await fetch('/api/health', { 
-          method: 'GET',
-          signal: AbortSignal.timeout(3000) // 3 second timeout
-        })
-        if (!healthCheck.ok) {
-          throw new Error('Backend server is not responding')
-        }
-      } catch (healthError) {
-        throw new Error('Backend server is not running. Please start it with: cd server && npm start')
-      }
-
-      // Send form data to backend API
+      // Send form data to backend API (Vercel serverless function)
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(15000) // 15 second timeout for serverless functions
       })
 
       if (!response.ok) {
