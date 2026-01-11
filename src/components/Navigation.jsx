@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { removeLogoBackground } from '../utils/removeLogoBackground'
 
@@ -7,6 +8,7 @@ const Navigation = () => {
   const [logoSrc, setLogoSrc] = useState('/images/image.png')
   const [isScrolled, setIsScrolled] = useState(false)
   const logoProcessed = useRef(false)
+  const location = useLocation()
   const { scrollY } = useScroll()
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -22,14 +24,10 @@ const Navigation = () => {
     }
   }, [])
 
-  const handleSmoothScroll = (e, targetId) => {
-    e.preventDefault()
-    const element = document.querySelector(targetId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+  // Close mobile menu when route changes
+  useEffect(() => {
     setIsMobileMenuOpen(false)
-  }
+  }, [location])
 
   return (
     <motion.nav
@@ -46,29 +44,30 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-24 md:h-28">
           {/* Logo */}
-          <motion.div
-            className="flex items-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 400 }}
-          >
-            <img
-              src={logoSrc}
-              alt="KEM Logo"
-              className="h-16 md:h-20 w-auto"
-            />
-          </motion.div>
+          <Link to="/">
+            <motion.div
+              className="flex items-center"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: 'spring', stiffness: 400 }}
+            >
+              <img
+                src={logoSrc}
+                alt="KEM Logo"
+                className="h-16 md:h-20 w-auto"
+              />
+            </motion.div>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-12">
             {[
-              { href: '#solutions', label: 'Solutions' },
-              { href: '#infrastructure', label: 'Infrastructure' },
-              { href: '#contact', label: 'Contact' },
+              { to: '/solutions', label: 'Solutions' },
+              { to: '/infrastructure', label: 'Infrastructure' },
+              { to: '/contact', label: 'Contact' },
             ].map((link) => (
               <MagneticLink
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleSmoothScroll(e, link.href)}
+                key={link.to}
+                to={link.to}
               >
                 {link.label}
               </MagneticLink>
@@ -106,18 +105,18 @@ const Navigation = () => {
         >
           <div className="py-6 flex flex-col space-y-4">
             {[
-              { href: '#solutions', label: 'Solutions' },
-              { href: '#infrastructure', label: 'Infrastructure' },
-              { href: '#contact', label: 'Contact' },
+              { to: '/solutions', label: 'Solutions' },
+              { to: '/infrastructure', label: 'Infrastructure' },
+              { to: '/contact', label: 'Contact' },
             ].map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
+              <Link
+                key={link.to}
+                to={link.to}
                 className="text-midnight-blue font-medium text-sm tracking-tight hover:text-slate-silver transition-colors duration-300"
-                onClick={(e) => handleSmoothScroll(e, link.href)}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </motion.div>
@@ -127,9 +126,11 @@ const Navigation = () => {
 }
 
 // Magnetic Link Component
-const MagneticLink = ({ href, onClick, children }) => {
+const MagneticLink = ({ to, children }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const linkRef = useRef(null)
+  const location = useLocation()
+  const isActive = location.pathname === to
 
   const handleMouseMove = (e) => {
     if (!linkRef.current) return
@@ -144,26 +145,35 @@ const MagneticLink = ({ href, onClick, children }) => {
   }
 
   return (
-    <motion.a
+    <motion.div
       ref={linkRef}
-      href={href}
-      onClick={onClick}
-      className="text-midnight-blue font-medium text-sm tracking-tight relative group transition-colors duration-300"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.1 }}
       style={{
         x: mousePosition.x,
         y: mousePosition.y,
       }}
     >
-      {children}
-      <motion.span
-        className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-teal via-accent-cyan to-accent-blue"
-        whileHover={{ width: '100%' }}
-        transition={{ duration: 0.3 }}
-      />
-    </motion.a>
+      <Link
+        to={to}
+        className={`text-midnight-blue font-medium text-sm tracking-tight relative group transition-colors duration-300 block ${
+          isActive ? 'text-midnight-blue' : ''
+        }`}
+      >
+        <motion.span
+          whileHover={{ scale: 1.1 }}
+          className="inline-block"
+        >
+          {children}
+        </motion.span>
+        <motion.span
+          className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent-teal via-accent-cyan to-accent-blue"
+          initial={{ width: isActive ? '100%' : '0%' }}
+          whileHover={{ width: '100%' }}
+          transition={{ duration: 0.3 }}
+        />
+      </Link>
+    </motion.div>
   )
 }
 

@@ -1,21 +1,23 @@
 import React from 'react'
-import Navigation from './components/Navigation'
-import Hero from './components/Hero'
-import Philosophy from './components/Philosophy'
-import Features from './components/Features'
-import Infrastructure from './components/Infrastructure'
-import Footer from './components/Footer'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import Solutions from './pages/Solutions'
+import InfrastructurePage from './pages/Infrastructure'
+import Contact from './pages/Contact'
 
 function App() {
   return (
-    <div className="min-h-screen bg-stark-white">
-      <Navigation />
-      <Hero />
-      <Philosophy />
-      <Infrastructure />
-      <Features />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="solutions" element={<Solutions />} />
+          <Route path="infrastructure" element={<InfrastructurePage />} />
+          <Route path="contact" element={<Contact />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
