@@ -1,10 +1,16 @@
 import React from 'react'
-import Features from '../components/Features'
+import AIVoiceAgent from '../components/AIVoiceAgent'
+import PortfolioWebsite from '../components/PortfolioWebsite'
+import GoogleReviews from '../components/GoogleReviews'
+import TechStack from '../components/TechStack'
 
 const Solutions = () => {
   return (
     <div className="pt-32">
-      <Features />
+      <AIVoiceAgent />
+      <PortfolioWebsite />
+      <GoogleReviews />
+      <TechStack />
     </div>
   )
 }

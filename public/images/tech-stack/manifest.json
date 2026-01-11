@@ -1,0 +1,104 @@
+{
+  "logos": [
+    {
+      "name": "Docker",
+      "fileName": "docker.svg",
+      "path": "/images/tech-stack/docker.svg"
+    },
+    {
+      "name": "Kubernetes",
+      "fileName": "kubernetes.svg",
+      "path": "/images/tech-stack/kubernetes.svg"
+    },
+    {
+      "name": "AWS",
+      "fileName": "amazonaws.svg",
+      "path": "/images/tech-stack/amazonaws.svg"
+    },
+    {
+      "name": "Azure",
+      "fileName": "microsoftazure.svg",
+      "path": "/images/tech-stack/microsoftazure.svg"
+    },
+    {
+      "name": "Google Cloud",
+      "fileName": "googlecloud.svg",
+      "path": "/images/tech-stack/googlecloud.svg"
+    },
+    {
+      "name": "Terraform",
+      "fileName": "terraform.svg",
+      "path": "/images/tech-stack/terraform.svg"
+    },
+    {
+      "name": "Ansible",
+      "fileName": "ansible.svg",
+      "path": "/images/tech-stack/ansible.svg"
+    },
+    {
+      "name": "Jenkins",
+      "fileName": "jenkins.svg",
+      "path": "/images/tech-stack/jenkins.svg"
+    },
+    {
+      "name": "GitLab",
+      "fileName": "gitlab.svg",
+      "path": "/images/tech-stack/gitlab.svg"
+    },
+    {
+      "name": "GitHub",
+      "fileName": "github.svg",
+      "path": "/images/tech-stack/github.svg"
+    },
+    {
+      "name": "Python",
+      "fileName": "python.svg",
+      "path": "/images/tech-stack/python.svg"
+    },
+    {
+      "name": "Node.js",
+      "fileName": "nodedotjs.svg",
+      "path": "/images/tech-stack/nodedotjs.svg"
+    },
+    {
+      "name": "React",
+      "fileName": "react.svg",
+      "path": "/images/tech-stack/react.svg"
+    },
+    {
+      "name": "TypeScript",
+      "fileName": "typescript.svg",
+      "path": "/images/tech-stack/typescript.svg"
+    },
+    {
+      "name": "PostgreSQL",
+      "fileName": "postgresql.svg",
+      "path": "/images/tech-stack/postgresql.svg"
+    },
+    {
+      "name": "MongoDB",
+      "fileName": "mongodb.svg",
+      "path": "/images/tech-stack/mongodb.svg"
+    },
+    {
+      "name": "Redis",
+      "fileName": "redis.svg",
+      "path": "/images/tech-stack/redis.svg"
+    },
+    {
+      "name": "NGINX",
+      "fileName": "nginx.svg",
+      "path": "/images/tech-stack/nginx.svg"
+    },
+    {
+      "name": "Prometheus",
+      "fileName": "prometheus.svg",
+      "path": "/images/tech-stack/prometheus.svg"
+    },
+    {
+      "name": "Grafana",
+      "fileName": "grafana.svg",
+      "path": "/images/tech-stack/grafana.svg"
+    }
+  ]
+}
