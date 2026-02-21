@@ -7,57 +7,60 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Primary Palette - Deep Professional Blues
-        'midnight-blue': '#001F3F',
-        'navy': '#0A2540',
-        'deep-blue': '#1B3A5E',
-        'ocean': '#2E5A8A',
-        
-        // Secondary Palette - Sophisticated Grays
-        'slate-silver': '#708090',
-        'charcoal': '#2C3E50',
-        'steel': '#4A5568',
-        'pearl': '#E8EDF2',
-        'mist': '#F5F7FA',
-        
-        // Accent Colors - Professional Teals & Blues
-        'accent-teal': '#0EA5E9',
-        'accent-cyan': '#06B6D4',
-        'accent-blue': '#3B82F6',
-        'accent-indigo': '#6366F1',
-        
-        // Neutral Base
-        'stark-white': '#FFFFFF',
-        'warm-white': '#FAFBFC',
-        'off-white': '#F8F9FA',
-        
-        // Semantic Colors
-        'success': '#10B981',
-        'warning': '#F59E0B',
-        'error': '#EF4444',
+        // Dark editorial base (agency-grade)
+        'void': '#0A0A0B',
+        'ink': '#111113',
+        'carbon': '#18181B',
+        'graphite': '#27272A',
+        'silver': '#71717A',
+        'pearl': '#E4E4E7',
+        'cloud': '#F4F4F5',
+        'white': '#FAFAFA',
+        // Accent: electric cyan (high-grade tech)
+        'accent': '#00D4FF',
+        'accent-dim': '#00A8CC',
+        'accent-glow': 'rgba(0, 212, 255, 0.4)',
+        // Legacy aliases for gradual migration
+        'midnight-blue': '#0A0A0B',
+        'stark-white': '#FAFAFA',
+        'warm-white': '#F4F4F5',
+        'slate-silver': '#71717A',
+        'deep-blue': '#18181B',
       },
       fontFamily: {
-        'sans': ['Inter', 'Helvetica Now', 'Montserrat', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Syne', 'Inter', 'system-ui', 'sans-serif'],
       },
-      spacing: {
-        'section': '100px',
+      fontSize: {
+        'display-xl': ['clamp(3rem, 8vw, 7rem)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
+        'display-lg': ['clamp(2.5rem, 5vw, 4.5rem)', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        'display-md': ['clamp(2rem, 4vw, 3.5rem)', { lineHeight: '1.1' }],
+      },
+      backgroundImage: {
+        'mesh': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.15), transparent), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 212, 255, 0.08), transparent), radial-gradient(ellipse 40% 30% at 20% 80%, rgba(0, 212, 255, 0.06), transparent)',
+        'mesh-dark': 'radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.12), transparent), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 212, 255, 0.06), transparent)',
+      },
+      boxShadow: {
+        'glow': '0 0 40px -10px rgba(0, 212, 255, 0.4)',
+        'glow-lg': '0 0 60px -15px rgba(0, 212, 255, 0.35)',
+        'card': '0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 2px 8px -2px rgba(0, 0, 0, 0.04)',
+        'card-hover': '0 24px 48px -12px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 212, 255, 0.15)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.8s ease-in-out',
-        'fade-in-up': 'fadeInUp 0.8s ease-out',
+        'float': 'float 8s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
         },
-        fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
         },
       },
     },
   },
   plugins: [],
 }
-

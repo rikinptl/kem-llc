@@ -1,23 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import LineReveal from './LineReveal'
 
 const CTASection = () => {
   return (
-    <section className="py-20 md:py-28 px-6 lg:px-12 bg-midnight-blue text-stark-white">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.h2
-          className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Ready to
-          <br />
-          <span className="text-white/90">get started?</span>
-        </motion.h2>
+    <section className="py-24 md:py-32 px-6 lg:px-12 bg-void text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh-dark opacity-100" />
+      <div className="max-w-4xl mx-auto text-center relative z-10">
+        <LineReveal lines={['Ready to', 'get started?']} as="h2" className="text-display-lg font-display font-bold tracking-tight mb-6 text-center" lineClassName={['text-white', 'text-pearl/90']} stagger={0.08} />
         <motion.p
-          className="text-xl text-white/80 mb-10 max-w-xl mx-auto"
+          className="text-xl text-pearl/80 mb-12 max-w-xl mx-auto"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -26,22 +19,16 @@ const CTASection = () => {
           No sales pitch—just a clear conversation about whether we're the right fit for your next project.
         </motion.p>
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4"
+          className="flex flex-wrap items-center justify-center gap-5"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center bg-white text-midnight-blue px-8 py-4 font-semibold text-sm tracking-tight hover:bg-warm-white transition-colors"
-          >
+          <Link to="/contact" className="inline-flex items-center justify-center bg-accent text-void px-10 py-4 font-semibold text-sm tracking-tight rounded-full hover:shadow-glow hover:scale-[1.02] transition-all duration-300">
             Request a quote
           </Link>
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center border border-white/50 text-white px-8 py-4 font-semibold text-sm tracking-tight hover:bg-white/10 transition-colors"
-          >
+          <Link to="/contact" className="inline-flex items-center justify-center border border-pearl/40 text-pearl px-10 py-4 font-semibold text-sm tracking-tight rounded-full hover:border-accent hover:text-accent transition-colors duration-300">
             Book a call
           </Link>
         </motion.div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import LineReveal from './LineReveal'
 
 const STATS = [
   { value: '50+', label: 'Projects delivered' },
@@ -10,50 +10,29 @@ const STATS = [
   { value: '40%', label: 'Avg. efficiency gain' },
 ]
 
+const container = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.08 } } }
+const statItem = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }
+
 const StatsSection = () => {
-  const { ref } = useScrollAnimation()
-
   return (
-    <section
-      ref={ref}
-      className="py-20 md:py-28 px-6 lg:px-12 bg-midnight-blue text-stark-white"
-    >
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight max-w-xl">
-            Numbers that
-            <br />
-            <span className="text-white/80 font-light">drive success</span>
-          </h2>
-          <Link
-            to="/solutions"
-            className="text-white/90 font-semibold text-sm tracking-tight hover:text-white transition-colors shrink-0"
-          >
-            More about us →
+    <section className="py-24 md:py-32 px-6 lg:px-12 bg-void text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh-dark opacity-100" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-20">
+          <LineReveal lines={['Numbers that', 'drive success']} as="h2" className="text-display-md font-display font-bold max-w-xl" lineClassName={['text-white', 'text-pearl/80 font-light']} stagger={0.08} />
+          <Link to="/solutions" className="arrow-rotate inline-flex items-center gap-2 text-pearl/90 font-semibold text-sm tracking-tight hover:text-accent transition-colors shrink-0">
+            More about us <span className="icon-arrow">→</span>
           </Link>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {STATS.map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.08 }}
-            >
-              <p className="text-4xl md:text-5xl font-bold tracking-tight text-accent-teal">
-                {stat.value}
-              </p>
-              <p className="text-white/80 text-lg mt-1">{stat.label}</p>
+        <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-10 md:gap-14" variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
+          {STATS.map((s) => (
+            <motion.div key={s.label} variants={statItem}>
+              <p className="text-4xl md:text-5xl font-display font-bold tracking-tight text-accent">{s.value}</p>
+              <p className="text-pearl/80 text-lg mt-2">{s.label}</p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

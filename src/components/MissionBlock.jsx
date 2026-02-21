@@ -1,50 +1,46 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const MissionBlock = () => {
-  const { ref } = useScrollAnimation()
-
   return (
-    <section
-      ref={ref}
-      className="py-20 md:py-28 px-6 lg:px-12 bg-midnight-blue text-stark-white"
-    >
-      <div className="max-w-5xl mx-auto text-center">
+    <section className="py-24 md:py-32 px-6 lg:px-12 bg-void text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-mesh-dark opacity-100" />
+      <div className="max-w-4xl mx-auto text-center relative z-10">
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-8"
-          initial={{ opacity: 0, y: 24 }}
+          className="font-display font-bold text-display-md tracking-tight leading-tight mb-8"
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
         >
           We're an IT automation company built for clarity and scale.
         </motion.h2>
         <motion.h2
-          className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-white/90 mb-12"
-          initial={{ opacity: 0, y: 24 }}
+          className="font-display font-bold text-display-md tracking-tight leading-tight text-pearl/90 mb-14"
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
         >
           We create systems that reduce complexity and deliver measurable results.
         </motion.h2>
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-4"
-          initial={{ opacity: 0, y: 16 }}
+          className="flex flex-wrap items-center justify-center gap-5"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
           <Link
             to="/contact"
-            className="inline-flex items-center justify-center bg-white text-midnight-blue px-8 py-4 font-semibold text-sm tracking-tight hover:bg-warm-white transition-colors"
+            className="inline-flex items-center justify-center bg-accent text-void px-10 py-4 font-semibold text-sm tracking-tight rounded-full hover:shadow-glow hover:scale-[1.02] transition-all duration-300"
           >
             Get in touch
           </Link>
           <Link
             to="/solutions"
-            className="inline-flex items-center justify-center border border-white/50 text-white px-8 py-4 font-semibold text-sm tracking-tight hover:bg-white/10 transition-colors"
+            className="inline-flex items-center justify-center border border-pearl/40 text-pearl px-10 py-4 font-semibold text-sm tracking-tight rounded-full hover:border-accent hover:text-accent transition-colors duration-300"
           >
             More about us
           </Link>
