@@ -1,36 +1,71 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+
+const FOOTER_LINKS = [
+  { to: '/', label: 'Home' },
+  { to: '/solutions', label: 'Solutions' },
+  { to: '/infrastructure', label: 'Infrastructure' },
+  { to: '/contact', label: 'Contact' },
+]
 
 const Footer = () => {
-  const { ref } = useScrollAnimation()
-
   return (
-    <footer
-      ref={ref}
-      className="py-section px-6 lg:px-12 border-t border-slate-silver/20 relative overflow-hidden bg-stark-white"
-    >
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Footer Bottom */}
+    <footer className="bg-midnight-blue text-stark-white py-16 md:py-20 px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="md:col-span-2">
+            <p className="text-2xl font-bold tracking-tight mb-4">KEM</p>
+            <p className="text-white/80 text-sm leading-relaxed max-w-md">
+              Intelligence, uncomplicated. We deliver automation, infrastructure, and development that streamline complexity and drive results.
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/60 mb-4">
+              Menu
+            </p>
+            <ul className="space-y-3">
+              {FOOTER_LINKS.map(({ to, label }) => (
+                <li key={to}>
+                  <Link
+                    to={to}
+                    className="text-white/90 hover:text-white text-sm transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-widest uppercase text-white/60 mb-4">
+              Contact
+            </p>
+            <a
+              href="mailto:kem.sales.us@gmail.com"
+              className="text-white/90 hover:text-white text-sm block transition-colors"
+            >
+              kem.sales.us@gmail.com
+            </a>
+            <a
+              href="tel:+14694652048"
+              className="text-white/90 hover:text-white text-sm block mt-2 transition-colors"
+            >
+              +1 (469) 465-2048
+            </a>
+          </div>
+        </div>
+
         <motion.div
-          className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
         >
-          <motion.p
-            className="text-slate-silver text-sm font-light"
-            whileHover={{ scale: 1.05 }}
-          >
+          <p className="text-white/60 text-sm">
             © {new Date().getFullYear()} KEM. All rights reserved.
-          </motion.p>
-          <motion.p
-            className="text-slate-silver text-sm font-light italic"
-            whileHover={{ scale: 1.05 }}
-          >
-            Built for Enterprise
-          </motion.p>
+          </p>
+          <p className="text-white/60 text-sm">Built for enterprise</p>
         </motion.div>
       </div>
     </footer>

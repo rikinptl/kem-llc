@@ -1,120 +1,70 @@
 import React from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
+
+const VALUES = [
+  {
+    title: 'Creative excellence',
+    description:
+      'We craft solutions that are both technically sound and easy to use—making your systems memorable and maintainable.',
+  },
+  {
+    title: 'Customised solutions',
+    description:
+      'Tailored to your stack, timeline, and goals. We don’t ship templates; we deliver what fits your business.',
+  },
+  {
+    title: 'Integrated expertise',
+    description:
+      'We combine architecture, automation, and development so you get one coherent outcome instead of siloed deliverables.',
+  },
+  {
+    title: 'Open communication',
+    description:
+      'You always know where the project stands. Clear updates, honest timelines, and no surprises.',
+  },
+]
 
 const Philosophy = () => {
   const { ref } = useScrollAnimation()
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0])
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [100, 0, 0, -100])
-
-  const pillars = [
-    {
-      title: 'Connectivity',
-      description: 'Seamless integration across systems, creating unified workflows that eliminate silos and enhance collaboration.',
-      gradient: 'from-accent-teal/20 via-accent-cyan/15 to-transparent',
-      borderColor: 'border-accent-teal/30',
-      iconGradient: 'from-accent-teal to-accent-cyan',
-    },
-    {
-      title: 'Precision',
-      description: 'Mathematical accuracy in every implementation. Our solutions are engineered with exacting standards for reliability.',
-      gradient: 'from-accent-blue/20 via-accent-indigo/15 to-transparent',
-      borderColor: 'border-accent-blue/30',
-      iconGradient: 'from-accent-blue to-accent-indigo',
-    },
-    {
-      title: 'Balance',
-      description: 'Harmonizing innovation with stability. We deliver cutting-edge technology that maintains operational excellence.',
-      gradient: 'from-ocean/20 via-deep-blue/15 to-transparent',
-      borderColor: 'border-ocean/30',
-      iconGradient: 'from-ocean to-deep-blue',
-    },
-  ]
 
   return (
-    <section 
+    <section
       ref={ref}
-      className="py-section px-6 lg:px-12 relative overflow-hidden"
+      className="py-20 md:py-28 px-6 lg:px-12 bg-stark-white"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Section title */}
         <motion.div
-          className="mb-20"
+          className="mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-midnight-blue tracking-tight text-center">
-            The KEM Philosophy
+          <h2 className="text-4xl md:text-5xl font-bold text-midnight-blue tracking-tight max-w-3xl">
+            We blend cutting-edge technology with clear design to build systems that reduce complexity and drive growth.
           </h2>
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"
-          style={{ opacity, y }}
-        >
-          {pillars.map((pillar, index) => (
-            <PillarCard key={index} pillar={pillar} index={index} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          {VALUES.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+            >
+              <h3 className="text-xl font-bold text-midnight-blue tracking-tight mb-3">
+                {item.title}
+              </h3>
+              <p className="text-slate-silver leading-relaxed">
+                {item.description}
+              </p>
+            </motion.div>
           ))}
-        </motion.div>
-      </div>
-    </section>
-  )
-}
-
-const PillarCard = ({ pillar, index }) => {
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 })
-  const cardRef = React.useRef(null)
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-    setMousePosition({ x: x * 0.1, y: y * 0.1 })
-  }
-
-  const handleMouseLeave = () => {
-    setMousePosition({ x: 0, y: 0 })
-  }
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className="relative group"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay: index * 0.2 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        x: mousePosition.x,
-        y: mousePosition.y,
-      }}
-    >
-      {/* Clean card with solid background */}
-      <div className="relative h-full p-8 md:p-12 rounded-3xl border border-slate-silver/30 bg-stark-white transition-all duration-300 group-hover:border-slate-silver/50 group-hover:shadow-lg">
-        <div className="relative z-10">
-          <motion.h3
-            className="text-3xl md:text-4xl font-bold text-midnight-blue tracking-tight mb-6"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 400 }}
-          >
-            {pillar.title}
-          </motion.h3>
-          <p className="text-slate-silver text-lg leading-relaxed font-light">
-            {pillar.description}
-          </p>
         </div>
       </div>
-    </motion.div>
+    </section>
   )
 }
 
