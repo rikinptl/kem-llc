@@ -14,22 +14,23 @@ const card = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0 } }
 
 const TestimonialsStrip = () => {
   return (
-    <section className="py-24 md:py-32 px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 md:py-32 px-6 lg:px-12 bg-canvas overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-indigo-500/[0.05] via-transparent to-rose-500/[0.04]" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-20">
-          <LineReveal lines={['Hear it from', 'our clients']} as="h2" className="text-display-md font-display font-bold text-ink tracking-tight max-w-2xl" lineClassName={['text-ink', 'text-silver font-light']} stagger={0.08} />
-          <Link to="/solutions" className="arrow-rotate inline-flex items-center gap-2 text-ink font-semibold text-sm tracking-tight hover:text-accent transition-colors shrink-0">
+          <LineReveal lines={['Hear it from', 'our clients']} as="h2" className="text-display-md font-display font-bold text-white tracking-tight max-w-2xl" lineClassName={['text-white', 'text-white/45 font-light']} stagger={0.08} />
+          <Link to="/solutions" className="arrow-rotate inline-flex items-center gap-2 text-white/80 font-semibold text-sm tracking-tight hover:text-accent transition-colors shrink-0">
             Read more <span className="icon-arrow">→</span>
           </Link>
         </div>
 
         <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-8" variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
           {QUOTES.map((q, i) => (
-            <motion.blockquote key={i} variants={card} className="p-8 rounded-3xl border border-ink/10 bg-cloud/50 hover:border-accent/20 hover:shadow-card transition-all duration-300">
-              <p className="text-ink/90 leading-relaxed mb-6">&ldquo;{q.quote}&rdquo;</p>
+            <motion.blockquote key={i} variants={card} className="p-8 rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm shadow-glass hover:border-accent/25 hover:shadow-glow transition-all duration-300">
+              <p className="text-white/80 leading-relaxed mb-6">&ldquo;{q.quote}&rdquo;</p>
               <footer>
-                <p className="font-semibold text-ink text-sm">{q.author}</p>
-                <p className="text-silver text-xs">{q.role}</p>
+                <p className="font-semibold text-white text-sm">{q.author}</p>
+                <p className="text-white/45 text-xs">{q.role}</p>
               </footer>
             </motion.blockquote>
           ))}

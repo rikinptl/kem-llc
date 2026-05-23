@@ -40,9 +40,10 @@ const Infrastructure = () => {
     <section
       id="infrastructure"
       ref={ref}
-      className="py-section px-6 lg:px-12 relative overflow-hidden bg-stark-white"
+      className="py-section px-6 lg:px-12 relative overflow-hidden bg-canvas"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-cyan-500/[0.05] via-transparent to-indigo-500/[0.06]" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section title */}
         <motion.div
           className="mb-20 text-center"
@@ -51,10 +52,10 @@ const Infrastructure = () => {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-midnight-blue tracking-tight mb-6">
+          <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight mb-6">
             Enterprise Infrastructure
           </h2>
-          <p className="text-xl text-slate-silver font-light max-w-2xl mx-auto">
+          <p className="text-xl text-white/50 font-light max-w-2xl mx-auto">
             Robust, scalable infrastructure solutions built for performance and reliability.
           </p>
         </motion.div>
@@ -103,16 +104,16 @@ const InfrastructureCard = ({ item, index }) => {
         y: mousePosition.y,
       }}
     >
-      <div className="relative h-full p-8 md:p-12 rounded-3xl border border-slate-silver/30 bg-stark-white transition-all duration-300 group-hover:border-slate-silver/50 group-hover:shadow-lg">
+      <div className="relative h-full p-8 md:p-12 rounded-3xl border border-white/[0.1] bg-white/[0.03] backdrop-blur-sm shadow-glass transition-all duration-300 group-hover:border-accent/35 group-hover:shadow-glow">
         <div className="relative z-10">
           <motion.h3
-            className="text-2xl md:text-3xl font-bold text-midnight-blue tracking-tight mb-4"
+            className="text-2xl md:text-3xl font-bold text-white tracking-tight mb-4"
             whileHover={{ scale: 1.02 }}
             transition={{ type: 'spring', stiffness: 400 }}
           >
             {item.title}
           </motion.h3>
-          <p className="text-slate-silver text-lg leading-relaxed font-light">
+          <p className="text-white/55 text-lg leading-relaxed font-light">
             {item.description}
           </p>
         </div>

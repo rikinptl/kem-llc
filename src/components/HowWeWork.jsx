@@ -15,11 +15,12 @@ const stepItem = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
 
 const HowWeWork = () => {
   return (
-    <section className="py-24 md:py-32 px-6 lg:px-12 bg-cloud">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 md:py-32 px-6 lg:px-12 bg-surface overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-ambient opacity-35" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-20">
-          <LineReveal lines={['How we bring', 'ideas to life']} as="h2" className="text-display-md font-display font-bold text-ink tracking-tight max-w-2xl" lineClassName={['text-ink', 'text-silver font-light']} stagger={0.08} />
-          <Link to="/contact" className="arrow-rotate inline-flex items-center gap-2 text-ink font-semibold text-sm tracking-tight hover:text-accent transition-colors shrink-0">
+          <LineReveal lines={['How we bring', 'ideas to life']} as="h2" className="text-display-md font-display font-bold text-white tracking-tight max-w-2xl" lineClassName={['text-white', 'text-white/45 font-light']} stagger={0.08} />
+          <Link to="/contact" className="arrow-rotate inline-flex items-center gap-2 text-white/80 font-semibold text-sm tracking-tight hover:text-accent transition-colors shrink-0">
             How we work <span className="icon-arrow">→</span>
           </Link>
         </div>
@@ -27,10 +28,10 @@ const HowWeWork = () => {
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8" variants={container} initial="hidden" whileInView="show" viewport={{ once: true }}>
           {STEPS.map((step) => (
             <motion.article key={step.num} variants={stepItem} className="relative">
-              <p className="text-silver/70 text-2xl font-bold mb-4">{step.num}</p>
-              <h3 className="text-xl font-display font-bold text-ink tracking-tight mb-3">{step.title}</h3>
-              <p className="text-silver leading-relaxed text-sm mb-4">{step.desc}</p>
-              <p className="text-silver/80 text-xs font-medium">{step.duration}</p>
+              <p className="text-white/35 text-2xl font-bold mb-4">{step.num}</p>
+              <h3 className="text-xl font-display font-bold text-white tracking-tight mb-3">{step.title}</h3>
+              <p className="text-white/55 leading-relaxed text-sm mb-4">{step.desc}</p>
+              <p className="text-white/45 text-xs font-medium">{step.duration}</p>
             </motion.article>
           ))}
         </motion.div>

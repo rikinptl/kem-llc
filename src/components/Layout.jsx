@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Navigation from './Navigation'
 import Footer from './Footer'
 import Preloader from './Preloader'
+import ScrollProgress from './ScrollProgress'
 import Lenis from 'lenis'
 
 const Layout = () => {
@@ -11,8 +12,9 @@ const Layout = () => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.08,
-      wheelMultiplier: 0.8,
+      /** Slightly snappier so scroll doesn’t feel like input lag (“buffering”) */
+      lerp: 0.12,
+      wheelMultiplier: 1,
       gestureOrientation: 'vertical',
       smoothWheel: true,
     })
@@ -43,8 +45,9 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-canvas text-white/90">
       <Preloader />
+      <ScrollProgress />
       <Navigation />
       <main>
         <Outlet />

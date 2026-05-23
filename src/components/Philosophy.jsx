@@ -13,10 +13,11 @@ const item = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0 } }
 
 const Philosophy = () => {
   return (
-    <section className="py-24 md:py-32 px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 md:py-32 px-6 lg:px-12 bg-canvas overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-violet-500/[0.05] via-transparent to-cyan-500/[0.04]" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.h2
-          className="font-display font-bold text-display-md text-ink tracking-tight max-w-3xl mb-20"
+          className="font-display font-bold text-display-md text-white tracking-tight max-w-3xl mb-20"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -27,8 +28,8 @@ const Philosophy = () => {
         <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12" variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-60px' }}>
           {VALUES.map((v) => (
             <motion.div key={v.title} variants={item}>
-              <h3 className="text-xl font-display font-bold text-ink tracking-tight mb-3">{v.title}</h3>
-              <p className="text-silver leading-relaxed">{v.description}</p>
+              <h3 className="text-xl font-display font-bold text-white tracking-tight mb-3">{v.title}</h3>
+              <p className="text-white/55 leading-relaxed">{v.description}</p>
             </motion.div>
           ))}
         </motion.div>

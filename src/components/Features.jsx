@@ -35,8 +35,9 @@ const Features = () => {
     <section 
       id="solutions" 
       ref={ref}
-      className="py-section bg-midnight-blue px-6 lg:px-12 relative overflow-hidden"
+      className="py-section bg-surface px-6 lg:px-12 relative overflow-hidden border-y border-white/[0.06]"
     >
+      <div className="pointer-events-none absolute inset-0 bg-ambient opacity-40" aria-hidden />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section title */}
@@ -47,7 +48,7 @@ const Features = () => {
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-stark-white tracking-tight text-center">
+          <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight text-center">
             Our Core<br />Capabilities
           </h2>
         </motion.div>
@@ -98,7 +99,7 @@ const BentoCard = ({ item, index }) => {
       }}
     >
       {/* Clean card with solid background */}
-      <div className="relative h-full min-h-[200px] p-8 rounded-3xl border border-slate-silver/30 bg-white/10 transition-all duration-300 group-hover:bg-white/15 group-hover:border-slate-silver/50 group-hover:shadow-lg">
+      <div className="relative h-full min-h-[200px] p-8 rounded-3xl border border-white/[0.1] bg-white/[0.05] backdrop-blur-sm transition-all duration-300 group-hover:bg-white/[0.08] group-hover:border-accent/25 group-hover:shadow-glow">
         <div className="relative z-10 flex flex-col justify-center h-full">
           <motion.span
             className="text-4xl mb-4"
@@ -107,7 +108,7 @@ const BentoCard = ({ item, index }) => {
           >
             {item.icon}
           </motion.span>
-          <h3 className="text-xl font-semibold text-stark-white mb-2">
+          <h3 className="text-xl font-semibold text-white mb-2">
             {item.title}
           </h3>
         </div>

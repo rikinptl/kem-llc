@@ -30,9 +30,10 @@ const TechStack = () => {
   return (
     <section
       ref={ref}
-      className="py-section px-6 lg:px-12 relative overflow-hidden bg-stark-white"
+      className="py-section px-6 lg:px-12 relative overflow-hidden bg-surface border-y border-white/[0.06]"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="pointer-events-none absolute inset-0 bg-ambient opacity-25" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Section title */}
         <motion.div
           className="mb-16 text-center"
@@ -41,10 +42,10 @@ const TechStack = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-midnight-blue tracking-tight mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
             Our Tech Stack
           </h2>
-          <p className="text-slate-silver text-lg font-light max-w-2xl mx-auto">
+          <p className="text-white/50 text-lg font-light max-w-2xl mx-auto">
             Built with industry-leading tools and technologies
           </p>
         </motion.div>
@@ -91,7 +92,7 @@ const TechLogo = ({ tech, index }) => {
         y: mousePosition.y,
       }}
     >
-      <div className="relative p-6 rounded-2xl border border-slate-silver/20 bg-stark-white transition-all duration-300 group-hover:border-slate-silver/40 group-hover:shadow-lg w-full aspect-square flex items-center justify-center">
+      <div className="relative p-6 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 group-hover:border-accent/30 group-hover:shadow-glow w-full aspect-square flex items-center justify-center">
         <img
           src={tech.path}
           alt={tech.name}
@@ -101,7 +102,7 @@ const TechLogo = ({ tech, index }) => {
           }}
         />
       </div>
-      <p className="mt-3 text-sm text-slate-silver font-light text-center">
+      <p className="mt-3 text-sm text-white/45 font-light text-center">
         {tech.name}
       </p>
     </motion.div>

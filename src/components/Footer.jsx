@@ -11,8 +11,9 @@ const FOOTER_LINKS = [
 
 const Footer = () => {
   return (
-    <footer className="bg-void text-white py-20 md:py-24 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative bg-canvas text-white py-20 md:py-24 px-6 lg:px-12 border-t border-white/[0.08] overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-indigo-500/[0.04] via-transparent to-rose-500/[0.03] opacity-80" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-14 mb-16">
           <div className="md:col-span-2">
             <p className="font-display font-extrabold text-2xl tracking-tight mb-5 text-white">KEM</p>

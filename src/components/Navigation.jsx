@@ -23,12 +23,10 @@ const Navigation = () => {
   }, [location])
 
   const onHero = !isScrolled
-  const navBg = onHero
-    ? 'rgba(10, 10, 11, 0.4)'
-    : 'rgba(250, 250, 250, 0.92)'
-  const navBorder = onHero ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
-  const textColor = onHero ? 'text-white' : 'text-ink'
-  const linkHover = onHero ? 'hover:text-accent' : 'hover:text-accent'
+  const navBg = onHero ? 'rgba(3, 3, 3, 0.45)' : 'rgba(3, 3, 3, 0.82)'
+  const navBorder = 'rgba(255,255,255,0.08)'
+  const textColor = 'text-white'
+  const linkHover = 'hover:text-accent'
 
   return (
     <motion.nav
@@ -39,14 +37,14 @@ const Navigation = () => {
         backgroundColor: navBg,
         backdropFilter: 'blur(20px) saturate(180%)',
         borderColor: navBorder,
-        boxShadow: isScrolled ? '0 4px 24px -4px rgba(0,0,0,0.06)' : 'none',
+        boxShadow: isScrolled ? '0 8px 32px -8px rgba(0,0,0,0.5)' : 'none',
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-20 md:h-24">
           <Link to="/" className="flex items-center">
             <motion.span
-              className={`font-display font-extrabold text-xl tracking-tight ${onHero ? 'text-white' : 'text-ink'}`}
+              className="font-display font-extrabold text-xl tracking-tight text-white"
               whileHover={{ scale: 1.02 }}
             >
               KEM
@@ -60,7 +58,6 @@ const Navigation = () => {
                 to={link.to}
                 isActive={location.pathname === link.to}
                 className={`${textColor} ${linkHover}`}
-                onHero={onHero}
               >
                 {link.label}
               </NavLink>
@@ -68,7 +65,7 @@ const Navigation = () => {
           </div>
 
           <motion.button
-            className={`md:hidden p-2 ${onHero ? 'text-white' : 'text-ink'}`}
+            className="md:hidden p-2 text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.9 }}
@@ -109,7 +106,7 @@ const Navigation = () => {
   )
 }
 
-const NavLink = ({ to, children, isActive, className, onHero }) => (
+const NavLink = ({ to, children, isActive, className }) => (
   <Link to={to} className={`navlink relative font-medium text-sm tracking-tight transition-colors block ${className}`}>
     <motion.span
       className="inline-block"

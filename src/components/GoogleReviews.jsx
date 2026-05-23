@@ -53,9 +53,10 @@ const GoogleReviews = () => {
   return (
     <section
       ref={ref}
-      className="py-section px-6 lg:px-12 relative overflow-hidden bg-gradient-to-b from-mist to-stark-white"
+      className="py-section px-6 lg:px-12 relative overflow-hidden bg-canvas"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-rose-500/[0.06] via-transparent to-indigo-500/[0.05]" aria-hidden />
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
@@ -63,23 +64,23 @@ const GoogleReviews = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="rounded-3xl border border-slate-silver/30 bg-stark-white overflow-hidden shadow-lg">
+          <div className="rounded-3xl border border-white/[0.12] bg-white/[0.03] backdrop-blur-sm overflow-hidden shadow-glass">
             {/* Clickable Header */}
             <motion.button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="w-full p-8 md:p-12 flex items-center justify-between group hover:bg-mist/30 transition-colors duration-300"
+              className="w-full p-8 md:p-12 flex items-center justify-between group hover:bg-white/[0.05] transition-colors duration-300"
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.99 }}
             >
               <div className="flex items-center gap-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent-blue/20 to-accent-indigo/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/25 to-violet-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <span className="text-3xl">⭐</span>
                 </div>
                 <div className="text-left">
-                  <h3 className="text-2xl md:text-3xl font-bold text-midnight-blue mb-2">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
                     Google Reviews Management System
                   </h3>
-                  <p className="text-slate-silver font-light">
+                  <p className="text-white/50 font-light">
                     {isExpanded ? 'Click to collapse' : 'Click to explore benefits'}
                   </p>
                 </div>
@@ -87,7 +88,7 @@ const GoogleReviews = () => {
               <motion.div
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
-                className="text-midnight-blue"
+                className="text-white"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -105,7 +106,7 @@ const GoogleReviews = () => {
                   transition={{ duration: 0.4 }}
                   className="overflow-hidden"
                 >
-                  <div className="px-8 md:px-12 pb-8 md:pb-12 border-t border-slate-silver/20">
+                  <div className="px-8 md:px-12 pb-8 md:pb-12 border-t border-white/10">
                     {/* Introduction */}
                     <motion.div
                       className="pt-8 mb-12"
@@ -113,7 +114,7 @@ const GoogleReviews = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
                     >
-                      <p className="text-lg text-charcoal leading-relaxed mb-6">
+                      <p className="text-lg text-white/70 leading-relaxed mb-6">
                         Take control of your online reputation with our comprehensive Google Reviews Management System. 
                         Automate review collection, monitor your online presence, respond to feedback, and leverage 
                         positive reviews to grow your business. Build trust with potential customers through transparent 
@@ -126,7 +127,7 @@ const GoogleReviews = () => {
                       {benefits.map((benefit, index) => (
                         <motion.div
                           key={benefit.title}
-                          className="p-6 rounded-2xl border border-slate-silver/20 bg-stark-white hover:border-slate-silver/40 hover:shadow-lg transition-all duration-300"
+                          className="p-6 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-white/20 hover:shadow-lg transition-all duration-300"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 + index * 0.05 }}
@@ -135,10 +136,10 @@ const GoogleReviews = () => {
                           <div className="flex items-start gap-4">
                             <span className="text-2xl">{benefit.icon}</span>
                             <div>
-                              <h4 className="text-xl font-bold text-midnight-blue mb-2">
+                              <h4 className="text-xl font-bold text-white mb-2">
                                 {benefit.title}
                               </h4>
-                              <p className="text-slate-silver font-light leading-relaxed">
+                              <p className="text-white/50 font-light leading-relaxed">
                                 {benefit.description}
                               </p>
                             </div>
@@ -149,7 +150,7 @@ const GoogleReviews = () => {
 
                     {/* Customization CTA */}
                     <motion.div
-                      className="p-8 rounded-2xl bg-gradient-to-r from-midnight-blue to-deep-blue text-stark-white"
+                      className="p-8 rounded-2xl bg-gradient-to-r from-indigo-600/90 to-canvas border border-white/10 text-white shadow-glass"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6 }}
@@ -168,7 +169,7 @@ const GoogleReviews = () => {
                         </div>
                         <Link to="/contact">
                           <motion.button
-                            className="px-8 py-4 bg-stark-white text-midnight-blue font-semibold rounded-lg hover:bg-mist transition-colors duration-300 whitespace-nowrap"
+                            className="px-8 py-4 bg-accent text-canvas font-semibold rounded-full hover:shadow-glow transition-all duration-300 whitespace-nowrap"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
@@ -187,22 +188,22 @@ const GoogleReviews = () => {
                     >
                       <div className="text-center">
                         <div className="text-3xl mb-3">🤖</div>
-                        <h5 className="font-semibold text-midnight-blue mb-2">Automation</h5>
-                        <p className="text-sm text-slate-silver font-light">
+                        <h5 className="font-semibold text-white mb-2">Automation</h5>
+                        <p className="text-sm text-white/50 font-light">
                           Set-it-and-forget-it review collection
                         </p>
                       </div>
                       <div className="text-center">
                         <div className="text-3xl mb-3">📊</div>
-                        <h5 className="font-semibold text-midnight-blue mb-2">Real-time Insights</h5>
-                        <p className="text-sm text-slate-silver font-light">
+                        <h5 className="font-semibold text-white mb-2">Real-time Insights</h5>
+                        <p className="text-sm text-white/50 font-light">
                           Monitor performance and trends live
                         </p>
                       </div>
                       <div className="text-center">
                         <div className="text-3xl mb-3">🔔</div>
-                        <h5 className="font-semibold text-midnight-blue mb-2">Smart Alerts</h5>
-                        <p className="text-sm text-slate-silver font-light">
+                        <h5 className="font-semibold text-white mb-2">Smart Alerts</h5>
+                        <p className="text-sm text-white/50 font-light">
                           Never miss an important review
                         </p>
                       </div>

@@ -20,7 +20,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-white text-ink;
+    @apply font-sans antialiased bg-canvas text-white/85;
     overflow-x: hidden;
   }
 
@@ -99,4 +99,40 @@
 .foot-btn-hor:hover .footer-arrow-hover-hor {
   transform: translateX(0);
   opacity: 1;
+}
+
+/* Jetstream-inspired ambience (patterns only—not template content) */
+.jetstream-soft-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.055) 1px,
+    transparent 0
+  );
+  background-size: 32px 32px;
+}
+
+/* Trust strip marquee */
+.marquee-mask {
+  overflow-x: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+.marquee-track {
+  animation: trust-marquee 42s linear infinite;
+}
+.marquee-mask:hover .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+@keyframes trust-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
