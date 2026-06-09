@@ -61,7 +61,7 @@ export const SOLUTION_CATEGORIES = [
       { title: 'Security awareness', description: 'Phishing simulations and training for your whole org.' },
     ],
     ctaTitle: 'Close security gaps',
-    ctaBody: 'We align controls to your regulatory reality—healthcare, finance, retail, or SaaS—and help you pass audits with evidence.',
+    ctaBody: 'We align controls to your regulatory reality—finance, retail, SaaS, or other regulated industries—and help you pass audits with evidence.',
     ctaLabel: 'Request assessment',
     features: [
       { title: 'Continuous monitoring', description: 'SIEM and log correlation options' },

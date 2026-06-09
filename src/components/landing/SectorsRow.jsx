@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 
 const SECTORS = [
-  { label: 'Healthcare', emoji: '🏥', color: 'bg-red-100' },
+  { label: 'Technology', emoji: '💻', color: 'bg-red-100' },
   { label: 'Finance', emoji: '💳', color: 'bg-blue-100' },
   { label: 'Retail', emoji: '🛒', color: 'bg-amber-100' },
   { label: 'Logistics', emoji: '📦', color: 'bg-orange-100' },

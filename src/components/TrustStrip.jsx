@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 const TRUST_LABELS = [
-  'Enterprise', 'Startups', 'Healthcare', 'Finance',
+  'Enterprise', 'Startups', 'Finance',
   'Retail', 'Technology', 'Manufacturing', 'Logistics',
 ]
 

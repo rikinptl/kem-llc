@@ -4,9 +4,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const STORIES = [
   {
-    tag: 'Healthcare',
-    quote: 'KEM cut our release cycle from weeks to days without sacrificing audit trails.',
-    name: 'Ops lead, regional provider',
+    tag: 'Logistics',
+    quote: 'Our drivers finally had an app that worked offline—and dispatch stopped living on phone calls.',
+    name: 'VP Operations, regional fleet operator',
     bg: 'bg-kem-sky',
   },
   {

@@ -5,6 +5,7 @@ const FOOTER_LINKS = [
   { to: '/', label: 'Home' },
   { to: '/solutions', label: 'Solutions' },
   { to: '/infrastructure', label: 'Infrastructure' },
+  { to: '/case-studies', label: 'Case studies' },
   { to: '/contact', label: 'Contact' },
 ]
 
