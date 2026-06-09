@@ -7,7 +7,7 @@ const Solutions = () => (
   <div className="landing-page">
     <PageHeader
       title="Solutions"
-      subtitle="Everything a full-service IT partner should deliver—managed support, cloud, security, dev, data, collaboration, AI, and digital growth."
+      subtitle="Full-service IT plus AI—agents, copilots, RAG, automation, cloud, security, dev, data, collaboration, and digital growth."
       bg="lime"
     />
     <SolutionsCatalog />

@@ -1,15 +1,15 @@
 import React from 'react'
 import PageHeader from '../components/PageHeader'
-import Infrastructure from '../components/Infrastructure'
+import InfrastructureCatalog from '../components/InfrastructureCatalog'
 
 const InfrastructurePage = () => (
   <div className="landing-page">
     <PageHeader
       title="Infrastructure"
-      subtitle="Robust, scalable cloud and ops—secure by default, observable by design."
+      subtitle="Cloud, network, compute, containers, observability, backup, and security—designed, migrated, and operated as one coherent stack."
       bg="sky"
     />
-    <Infrastructure />
+    <InfrastructureCatalog />
   </div>
 )
 

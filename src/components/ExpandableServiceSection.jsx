@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Check } from 'lucide-react'
+import ServiceIcon from './ServiceIcon'
 
 const ExpandableServiceSection = ({
-  icon,
+  id,
   title,
   subtitle,
   intro,
@@ -13,7 +15,6 @@ const ExpandableServiceSection = ({
   ctaLabel = 'Get started',
   features,
   bg = 'white',
-  iconBg = 'bg-kem-lime/50',
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const bgClass =
@@ -30,12 +31,12 @@ const ExpandableServiceSection = ({
             whileHover={{ scale: 1.005 }}
             whileTap={{ scale: 0.995 }}
           >
-            <div className="flex items-center gap-5 min-w-0">
-              <div
-                className={`w-14 h-14 shrink-0 rounded-2xl ${iconBg} flex items-center justify-center group-hover:scale-105 transition-transform`}
-              >
-                <span className="text-2xl">{icon}</span>
-              </div>
+            <div className="flex items-center gap-4 md:gap-5 min-w-0">
+              <ServiceIcon
+                id={id}
+                className="w-7 h-7 md:w-8 md:h-8 text-kem-forest shrink-0 group-hover:text-kem-forest-light transition-colors"
+                strokeWidth={1.65}
+              />
               <div className="min-w-0">
                 <h3 className="text-xl md:text-2xl font-display font-extrabold text-kem-forest mb-1">{title}</h3>
                 <p className="text-kem-forest/55 text-sm md:text-base">
@@ -63,18 +64,13 @@ const ExpandableServiceSection = ({
                   <p className="pt-8 text-kem-forest/70 leading-relaxed mb-10">{intro}</p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                    {benefits.map((benefit, index) => (
+                    {benefits.map((benefit) => (
                       <div
                         key={benefit.title}
-                        className="p-5 rounded-2xl border border-kem-forest/10 bg-kem-stone/50 hover:bg-kem-sky/40 transition-colors"
+                        className="p-5 rounded-2xl border border-kem-forest/10 bg-kem-stone/50 hover:bg-kem-sky/40 transition-colors border-l-[3px] border-l-kem-lime"
                       >
-                        <div className="flex items-start gap-3">
-                          <span className="text-xl">{benefit.icon}</span>
-                          <div>
-                            <h4 className="font-display font-bold text-kem-forest mb-1">{benefit.title}</h4>
-                            <p className="text-kem-forest/60 text-sm leading-relaxed">{benefit.description}</p>
-                          </div>
-                        </div>
+                        <h4 className="font-display font-bold text-kem-forest mb-1.5">{benefit.title}</h4>
+                        <p className="text-kem-forest/60 text-sm leading-relaxed">{benefit.description}</p>
                       </div>
                     ))}
                   </div>
@@ -95,7 +91,11 @@ const ExpandableServiceSection = ({
                     <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
                       {features.map((f) => (
                         <div key={f.title} className="text-center">
-                          <div className="text-2xl mb-2">{f.icon}</div>
+                          <Check
+                            className="w-5 h-5 text-kem-forest mx-auto mb-2"
+                            strokeWidth={2.25}
+                            aria-hidden
+                          />
                           <h5 className="font-semibold text-kem-forest mb-1">{f.title}</h5>
                           <p className="text-sm text-kem-forest/55">{f.description}</p>
                         </div>

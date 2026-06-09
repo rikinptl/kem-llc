@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
+import { ArrowUpRight, Clock, Mail, Phone } from 'lucide-react'
 
-const ContactForm = () => {
+const ContactForm = ({ showHeader = true, className = '' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,10 +14,7 @@ const ContactForm = () => {
   const [submitStatus, setSubmitStatus] = useState(null)
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e) => {
@@ -57,47 +55,87 @@ const ContactForm = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.1 }}
+      transition={{ duration: 0.5, delay: 0.08 }}
     >
-      <div className="landing-card p-8 md:p-10">
-        <h2 className="font-display font-extrabold text-2xl md:text-3xl text-kem-forest tracking-tight mb-3">
-          Send us a message
-        </h2>
-        <p className="text-kem-forest/60 mb-8">
-          Fill out the form below and we&apos;ll get back to you as soon as possible.
-        </p>
+      <div className="rounded-3xl border border-kem-forest/10 bg-white p-6 md:p-8 shadow-[0_8px_40px_-16px_rgba(22,51,0,0.12)]">
+        {showHeader && (
+          <>
+            <h2 className="font-display font-extrabold text-xl md:text-2xl text-kem-forest tracking-tight mb-2">
+              Project details
+            </h2>
+            <p className="text-kem-forest/55 text-sm mb-6">
+              A few fields—we&apos;ll follow up with next steps, not a generic pitch deck.
+            </p>
+          </>
+        )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {['name', 'email', 'phone', 'company'].map((field) => (
-            <div key={field}>
-              <label htmlFor={field} className="block text-sm font-semibold text-kem-forest/80 mb-2 capitalize">
-                {field === 'email' ? 'Email *' : field === 'name' ? 'Name *' : field}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+                Name *
               </label>
               <input
-                type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
-                id={field}
-                name={field}
-                value={formData[field]}
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
-                required={field === 'name' || field === 'email'}
+                required
                 className="form-input"
-                placeholder={
-                  field === 'name'
-                    ? 'Your full name'
-                    : field === 'email'
-                      ? 'you@company.com'
-                      : field === 'phone'
-                        ? '+1 (555) 123-4567'
-                        : 'Company name'
-                }
+                placeholder="Your name"
               />
             </div>
-          ))}
+            <div>
+              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="form-input"
+                placeholder="you@company.com"
+              />
+            </div>
+            <div>
+              <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+                Phone
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="+1 (555) 123-4567"
+              />
+            </div>
+            <div>
+              <label htmlFor="company" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+                Company
+              </label>
+              <input
+                type="text"
+                id="company"
+                name="company"
+                value={formData.company}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="Company name"
+              />
+            </div>
+          </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-semibold text-kem-forest/80 mb-2">
+            <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
               Message *
             </label>
             <textarea
@@ -106,9 +144,9 @@ const ContactForm = () => {
               value={formData.message}
               onChange={handleChange}
               required
-              rows={6}
+              rows={5}
               className="form-input resize-none"
-              placeholder="Tell us about your project or inquiry..."
+              placeholder="What are you trying to solve? Timeline, stack, team size…"
             />
           </div>
 
@@ -116,9 +154,9 @@ const ContactForm = () => {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-xl bg-kem-lime/40 border border-kem-forest/15 text-kem-forest text-sm"
+              className="p-3 rounded-xl bg-kem-lime/40 border border-kem-forest/15 text-kem-forest text-sm"
             >
-              Thank you! Your message has been sent—we&apos;ll get back to you soon.
+              Message sent—we&apos;ll be in touch soon.
             </motion.div>
           )}
 
@@ -126,22 +164,20 @@ const ContactForm = () => {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm"
+              className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm"
             >
-              <p className="font-semibold mb-1">Couldn&apos;t send your message</p>
-              <p>
-                Email us directly at{' '}
-                <a href="mailto:kem.sales.us@gmail.com" className="underline">
-                  kem.sales.us@gmail.com
-                </a>
-              </p>
+              Couldn&apos;t send—email{' '}
+              <a href="mailto:kem.sales.us@gmail.com" className="underline font-medium">
+                kem.sales.us@gmail.com
+              </a>{' '}
+              directly.
             </motion.div>
           )}
 
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="landing-pill-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            className="landing-pill-primary w-full sm:w-auto !px-10 disabled:opacity-50 disabled:cursor-not-allowed"
             whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
             whileTap={{ scale: isSubmitting ? 1 : 0.99 }}
           >

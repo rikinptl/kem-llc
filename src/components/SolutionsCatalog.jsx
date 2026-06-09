@@ -2,7 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ExpandableServiceSection from './ExpandableServiceSection'
+import ServiceIcon from './ServiceIcon'
 import { SOLUTION_CATEGORIES, SOLUTION_PILLARS } from '../data/solutionsCatalog'
+import { sectionBgAt } from '../lib/sectionBg'
 
 const SolutionsOverview = () => (
   <section className="landing-section pt-0 pb-12 md:pb-16 bg-white">
@@ -15,13 +17,17 @@ const SolutionsOverview = () => (
           <motion.a
             key={pillar.id}
             href={`#${pillar.id}`}
-            className="landing-card p-4 md:p-5 flex items-center gap-3 hover:bg-kem-lime/20 transition-colors group"
+            className="landing-card p-4 md:p-5 flex items-center gap-3.5 hover:border-kem-forest/20 hover:bg-kem-lime/10 transition-colors group"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.04 }}
           >
-            <span className="text-xl md:text-2xl shrink-0">{pillar.icon}</span>
+            <ServiceIcon
+              id={pillar.id}
+              className="w-5 h-5 md:w-[1.35rem] md:h-[1.35rem] text-kem-forest shrink-0"
+              strokeWidth={1.65}
+            />
             <span className="text-sm md:text-base font-display font-bold text-kem-forest leading-tight group-hover:text-kem-forest">
               {pillar.title}
             </span>
@@ -35,9 +41,9 @@ const SolutionsOverview = () => (
 const SolutionsCatalog = () => (
   <>
     <SolutionsOverview />
-    {SOLUTION_CATEGORIES.map((category) => (
+    {SOLUTION_CATEGORIES.map((category, index) => (
       <div key={category.id} id={category.id} className="scroll-mt-24">
-        <ExpandableServiceSection {...category} />
+        <ExpandableServiceSection {...category} bg={sectionBgAt(index)} />
       </div>
     ))}
     <section className="landing-section bg-kem-forest text-white text-center">
