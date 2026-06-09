@@ -20,7 +20,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-canvas text-white/85;
+    @apply font-sans antialiased bg-white text-kem-forest;
     overflow-x: hidden;
   }
 
@@ -135,4 +135,111 @@
   to {
     transform: translateX(-50%);
   }
+}
+
+/* Wise-inspired landing (homepage) */
+.landing-page {
+  background-color: #ffffff;
+  color: #163300;
+  -webkit-font-smoothing: antialiased;
+}
+.landing-display {
+  font-family: Syne, Inter, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #163300;
+}
+.landing-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+.landing-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  background-color: #9fe870;
+  color: #163300;
+  padding: 0.875rem 2rem;
+}
+.landing-pill-primary:hover {
+  filter: brightness(0.95);
+  transform: scale(1.02);
+}
+.landing-pill-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  border: 2px solid rgba(22, 51, 0, 0.2);
+  color: #163300;
+  padding: 0.875rem 2rem;
+}
+.landing-pill-secondary:hover {
+  border-color: rgba(22, 51, 0, 0.4);
+}
+.landing-card {
+  border-radius: 1.5rem;
+  border: 1px solid rgba(22, 51, 0, 0.1);
+  background: #fff;
+  box-shadow: 0 8px 40px -12px rgba(22, 51, 0, 0.12);
+}
+.landing-section {
+  padding: 5rem 1.5rem;
+}
+@media (min-width: 768px) {
+  .landing-section {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+@media (min-width: 1024px) {
+  .landing-section {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+.landing-globe-ring {
+  animation: globe-spin 24s linear infinite;
+}
+@keyframes globe-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.landing-story-track {
+  scrollbar-width: none;
+}
+.landing-story-track::-webkit-scrollbar {
+  display: none;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(22, 51, 0, 0.15);
+  background: #fff;
+  color: #163300;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input::placeholder {
+  color: rgba(22, 51, 0, 0.35);
+}
+.form-input:focus {
+  outline: none;
+  border-color: rgba(22, 51, 0, 0.35);
+  box-shadow: 0 0 0 3px rgba(159, 232, 112, 0.45);
 }

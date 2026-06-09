@@ -57,7 +57,7 @@ const Preloader = () => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-canvas"
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-white"
         initial={{ opacity: 1 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
         exit={{ opacity: 0 }}
@@ -67,7 +67,7 @@ const Preloader = () => {
         aria-hidden={!isVisible}
       >
         <motion.span
-          className="font-display font-extrabold text-accent tracking-tight"
+          className="font-display font-extrabold tracking-tight text-kem-forest"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)' }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

@@ -10,7 +10,7 @@ const ContactForm = () => {
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState(null) // 'success', 'error', or null
+  const [submitStatus, setSubmitStatus] = useState(null)
 
   const handleChange = (e) => {
     setFormData({
@@ -25,14 +25,11 @@ const ContactForm = () => {
     setSubmitStatus(null)
 
     try {
-      // Send form data to backend API (Vercel serverless function)
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
-        signal: AbortSignal.timeout(15000) // 15 second timeout for serverless functions
+        signal: AbortSignal.timeout(15000),
       })
 
       if (!response.ok) {
@@ -44,32 +41,15 @@ const ContactForm = () => {
 
       if (data.success) {
         setSubmitStatus('success')
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          message: '',
-        })
-        
-        // Reset status message after 5 seconds
-        setTimeout(() => {
-          setSubmitStatus(null)
-        }, 5000)
+        setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+        setTimeout(() => setSubmitStatus(null), 5000)
       } else {
         throw new Error(data.message || 'Failed to send message')
       }
     } catch (error) {
       console.error('Error sending email:', error)
       setSubmitStatus('error')
-      
-      // Show more helpful error message
-      console.log('Full error details:', error)
-      
-      // Reset error message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus(null)
-      }, 5000)
+      setTimeout(() => setSubmitStatus(null), 5000)
     } finally {
       setIsSubmitting(false)
     }
@@ -77,90 +57,47 @@ const ContactForm = () => {
 
   return (
     <motion.div
-      className="max-w-4xl mx-auto"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <div className="rounded-3xl border border-white/[0.1] bg-white/[0.03] backdrop-blur-sm shadow-glass p-8 md:p-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-6">
-          Send us a Message
+      <div className="landing-card p-8 md:p-10">
+        <h2 className="font-display font-extrabold text-2xl md:text-3xl text-kem-forest tracking-tight mb-3">
+          Send us a message
         </h2>
-        <p className="text-white/50 font-light mb-8">
+        <p className="text-kem-forest/60 mb-8">
           Fill out the form below and we&apos;ll get back to you as soon as possible.
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Name Field */}
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-white/80 mb-2">
-              Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg border border-white/[0.12] bg-white/[0.04] text-white placeholder-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all duration-300"
-              placeholder="Your full name"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {['name', 'email', 'phone', 'company'].map((field) => (
+            <div key={field}>
+              <label htmlFor={field} className="block text-sm font-semibold text-kem-forest/80 mb-2 capitalize">
+                {field === 'email' ? 'Email *' : field === 'name' ? 'Name *' : field}
+              </label>
+              <input
+                type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
+                id={field}
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                required={field === 'name' || field === 'email'}
+                className="form-input"
+                placeholder={
+                  field === 'name'
+                    ? 'Your full name'
+                    : field === 'email'
+                      ? 'you@company.com'
+                      : field === 'phone'
+                        ? '+1 (555) 123-4567'
+                        : 'Company name'
+                }
+              />
+            </div>
+          ))}
 
-          {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
-              Email *
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 rounded-lg border border-white/[0.12] bg-white/[0.04] text-white placeholder-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all duration-300"
-              placeholder="your.email@example.com"
-            />
-          </div>
-
-          {/* Phone Field */}
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-white/80 mb-2">
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-white/[0.12] bg-white/[0.04] text-white placeholder-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all duration-300"
-              placeholder="+1 (555) 123-4567"
-            />
-          </div>
-
-          {/* Company Field */}
-          <div>
-            <label htmlFor="company" className="block text-sm font-medium text-white/80 mb-2">
-              Company
-            </label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              value={formData.company}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-white/[0.12] bg-white/[0.04] text-white placeholder-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all duration-300"
-              placeholder="Company name"
-            />
-          </div>
-
-          {/* Message Field */}
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium text-white/80 mb-2">
+            <label htmlFor="message" className="block text-sm font-semibold text-kem-forest/80 mb-2">
               Message *
             </label>
             <textarea
@@ -170,43 +107,45 @@ const ContactForm = () => {
               onChange={handleChange}
               required
               rows={6}
-              className="w-full px-4 py-3 rounded-lg border border-white/[0.12] bg-white/[0.04] text-white placeholder-white/35 focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all duration-300 resize-none"
+              className="form-input resize-none"
               placeholder="Tell us about your project or inquiry..."
             />
           </div>
 
-          {/* Status Messages */}
           {submitStatus === 'success' && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-400/30 text-emerald-200"
+              className="p-4 rounded-xl bg-kem-lime/40 border border-kem-forest/15 text-kem-forest text-sm"
             >
-              ✓ Thank you! Your message has been sent successfully. We'll get back to you soon.
+              Thank you! Your message has been sent—we&apos;ll get back to you soon.
             </motion.div>
           )}
 
           {submitStatus === 'error' && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-4 rounded-lg bg-red-500/10 border border-red-400/30 text-red-200"
+              className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm"
             >
-              <p className="font-semibold mb-2">✗ Error sending message</p>
-              <p className="text-sm">Please ensure the backend server is running on port 3001, or contact us directly at <a href="mailto:kem.sales.us@gmail.com" className="underline">kem.sales.us@gmail.com</a></p>
-              <p className="text-xs mt-2 opacity-75">Check browser console (F12) for details</p>
+              <p className="font-semibold mb-1">Couldn&apos;t send your message</p>
+              <p>
+                Email us directly at{' '}
+                <a href="mailto:kem.sales.us@gmail.com" className="underline">
+                  kem.sales.us@gmail.com
+                </a>
+              </p>
             </motion.div>
           )}
 
-          {/* Submit Button */}
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-accent text-canvas px-10 py-4 font-semibold text-sm tracking-tight rounded-full hover:shadow-glow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-            whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+            className="landing-pill-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+            whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
+            whileTap={{ scale: isSubmitting ? 1 : 0.99 }}
           >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
+            {isSubmitting ? 'Sending…' : 'Send message'}
           </motion.button>
         </form>
       </div>
@@ -215,4 +154,3 @@ const ContactForm = () => {
 }
 
 export default ContactForm
-

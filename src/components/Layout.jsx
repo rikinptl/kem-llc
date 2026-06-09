@@ -12,7 +12,6 @@ const Layout = () => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      /** Slightly snappier so scroll doesn’t feel like input lag (“buffering”) */
       lerp: 0.12,
       wheelMultiplier: 1,
       gestureOrientation: 'vertical',
@@ -31,7 +30,6 @@ const Layout = () => {
     }
   }, [])
 
-  // Scroll to top when route changes (Solutions, Infrastructure, Contact, etc.)
   useEffect(() => {
     const id = requestAnimationFrame(() => {
       const lenis = lenisRef.current
@@ -45,7 +43,7 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <div className="min-h-screen bg-canvas text-white/90">
+    <div className="min-h-screen bg-white text-kem-forest landing-page">
       <Preloader />
       <ScrollProgress />
       <Navigation />
