@@ -1,20 +1,16 @@
 import React from 'react'
 import PageHeader from '../components/PageHeader'
-import AIVoiceAgent from '../components/AIVoiceAgent'
-import PortfolioWebsite from '../components/PortfolioWebsite'
-import GoogleReviews from '../components/GoogleReviews'
+import SolutionsCatalog from '../components/SolutionsCatalog'
 import TechStack from '../components/TechStack'
 
 const Solutions = () => (
   <div className="landing-page">
     <PageHeader
       title="Solutions"
-      subtitle="Automation, web, and reputation tools—scoped to how your team actually works."
+      subtitle="Everything a full-service IT partner should deliver—managed support, cloud, security, dev, data, collaboration, AI, and digital growth."
       bg="lime"
     />
-    <AIVoiceAgent />
-    <PortfolioWebsite />
-    <GoogleReviews />
+    <SolutionsCatalog />
     <TechStack />
   </div>
 )

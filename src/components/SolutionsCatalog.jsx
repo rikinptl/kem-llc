@@ -1,0 +1,60 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import ExpandableServiceSection from './ExpandableServiceSection'
+import { SOLUTION_CATEGORIES, SOLUTION_PILLARS } from '../data/solutionsCatalog'
+
+const SolutionsOverview = () => (
+  <section className="landing-section pt-0 pb-12 md:pb-16 bg-white">
+    <div className="max-w-7xl mx-auto">
+      <p className="text-center text-kem-forest/55 text-sm font-semibold uppercase tracking-[0.18em] mb-8">
+        What teams rely on us for
+      </p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 md:gap-4">
+        {SOLUTION_PILLARS.map((pillar, i) => (
+          <motion.a
+            key={pillar.id}
+            href={`#${pillar.id}`}
+            className="landing-card p-4 md:p-5 flex items-center gap-3 hover:bg-kem-lime/20 transition-colors group"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.04 }}
+          >
+            <span className="text-xl md:text-2xl shrink-0">{pillar.icon}</span>
+            <span className="text-sm md:text-base font-display font-bold text-kem-forest leading-tight group-hover:text-kem-forest">
+              {pillar.title}
+            </span>
+          </motion.a>
+        ))}
+      </div>
+    </div>
+  </section>
+)
+
+const SolutionsCatalog = () => (
+  <>
+    <SolutionsOverview />
+    {SOLUTION_CATEGORIES.map((category) => (
+      <div key={category.id} id={category.id} className="scroll-mt-24">
+        <ExpandableServiceSection {...category} />
+      </div>
+    ))}
+    <section className="landing-section bg-kem-forest text-white text-center">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="font-display font-extrabold text-2xl md:text-3xl mb-4 text-kem-lime">
+          Not sure where to start?
+        </h2>
+        <p className="text-white/70 mb-8 leading-relaxed">
+          Most clients begin with a managed IT or cloud assessment—we&apos;ll map priorities and
+          phase the rest.
+        </p>
+        <Link to="/contact" className="landing-pill-primary">
+          Book a discovery call
+        </Link>
+      </div>
+    </section>
+  </>
+)
+
+export default SolutionsCatalog
