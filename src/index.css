@@ -140,16 +140,16 @@
 /* KEM landing theme */
 .landing-page {
   background-color: #ffffff;
-  color: #111827;
   -webkit-font-smoothing: antialiased;
 }
-.landing-display {
-  font-family: Syne, Inter, system-ui, sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  text-transform: uppercase;
-  color: inherit;
+@layer components {
+  .landing-display {
+    font-family: Syne, Inter, system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
 }
 .landing-pill {
   display: inline-flex;

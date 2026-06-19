@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import DisplayHeadline from '../premium/DisplayHeadline'
 import RevealFade from '../premium/RevealFade'
 import { fadeTransition } from '../../lib/motion'
 import { DARK_SECTION } from '../../lib/theme'
@@ -10,12 +9,12 @@ const MissionBanner = () => (
   <section className={`landing-section overflow-hidden ${DARK_SECTION}`}>
     <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
       <div>
-        <DisplayHeadline
-          lines={['Meet tech', 'without friction']}
-          lineClassName={['text-white', 'text-kem-accent-light']}
-          className="text-[clamp(1.75rem,4vw,2.75rem)] text-white mb-6"
-        />
-        <RevealFade className="text-white/70 text-lg leading-relaxed mb-8 max-w-lg" delay={0.1}>
+        <RevealFade as="h2" className="font-display font-extrabold text-[clamp(1.75rem,4vw,2.75rem)] leading-tight text-white mb-6">
+          Meet tech
+          <br />
+          <span className="text-kem-accent-light">without friction</span>
+        </RevealFade>
+        <RevealFade className="text-white/85 text-lg leading-relaxed mb-8 max-w-lg" delay={0.1}>
           KEM is how ambitious teams ship automation, infrastructure, and software—measured in outcomes, not slide
           decks.
         </RevealFade>

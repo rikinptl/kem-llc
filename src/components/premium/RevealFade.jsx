@@ -5,6 +5,7 @@ import { fadeTransition } from '../../lib/motion'
 const motionTags = {
   div: motion.div,
   p: motion.p,
+  h2: motion.h2,
   span: motion.span,
   section: motion.section,
   article: motion.article,
