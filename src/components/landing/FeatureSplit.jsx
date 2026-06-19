@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import DisplayHeadline from '../premium/DisplayHeadline'
+import RevealFade from '../premium/RevealFade'
+import { fadeTransition } from '../../lib/motion'
 
 const FeatureSplit = ({
   eyebrow,
@@ -15,7 +18,7 @@ const FeatureSplit = ({
   visual,
 }) => {
   const bgClass =
-    bg === 'lime' ? 'bg-kem-lime' : bg === 'sky' ? 'bg-kem-sky' : bg === 'stone' ? 'bg-kem-stone' : 'bg-white'
+    bg === 'sky' ? 'bg-kem-sky' : bg === 'stone' ? 'bg-kem-stone' : bg === 'sky-deep' ? 'bg-kem-sky-deep' : 'bg-white'
 
   return (
     <section className={`landing-section ${bgClass}`}>
@@ -24,36 +27,39 @@ const FeatureSplit = ({
           reverse ? 'lg:[&>*:first-child]:order-2' : ''
         }`}
       >
-        <motion.div
-          initial={{ opacity: 0, x: reverse ? 24 : -24 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-        >
+        <div>
           {eyebrow && (
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-kem-forest/55 mb-4">{eyebrow}</p>
+            <RevealFade as={motion.p} className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 mb-4" y={10}>
+              {eyebrow}
+            </RevealFade>
           )}
-          <h2 className="landing-display text-[clamp(1.75rem,4vw,2.75rem)] normal-case mb-6">{title}</h2>
-          <p className="text-kem-forest/70 text-lg leading-relaxed mb-8 max-w-lg">{body}</p>
-          <div className="flex flex-wrap gap-4">
+          <DisplayHeadline
+            lines={title.includes('\n') ? title.split('\n') : title}
+            className="text-[clamp(1.75rem,4vw,2.75rem)] mb-6"
+          />
+          <RevealFade className="text-slate-600 text-lg leading-relaxed mb-8 max-w-lg" delay={0.08}>
+            {body}
+          </RevealFade>
+          <RevealFade className="flex flex-wrap gap-4" delay={0.14} y={10}>
             {ctaLabel && ctaTo && (
-              <Link to={ctaTo} className="landing-pill-primary">
+              <Link to={ctaTo} className="landing-pill-primary" data-cursor="interactive">
                 {ctaLabel}
               </Link>
             )}
             {secondaryLabel && secondaryTo && (
-              <Link to={secondaryTo} className="landing-pill-secondary">
+              <Link to={secondaryTo} className="landing-pill-secondary" data-cursor="interactive">
                 {secondaryLabel}
               </Link>
             )}
-          </div>
-        </motion.div>
+          </RevealFade>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, x: reverse ? -24 : 24 }}
+          initial={{ opacity: 0, x: reverse ? 16 : -16 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={fadeTransition(0.1, 0.85)}
+          className="premium-hover-lift will-change-transform"
         >
           {visual}
         </motion.div>

@@ -37,17 +37,17 @@ const CaseStudyDetail = () => {
           alt={study.imageAlt}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-kem-forest via-kem-forest/70 to-kem-forest/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-slate-950/30" />
         <div className="relative z-10 w-full max-w-4xl mx-auto px-6 lg:px-12 pt-32 pb-12 md:pb-16">
           <Link
             to="/case-studies"
-            className="inline-flex items-center gap-2 text-white/70 hover:text-kem-lime text-sm font-semibold mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-kem-accent-light text-sm font-semibold mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             All case studies
           </Link>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="inline-block px-3 py-1 rounded-full bg-kem-lime text-kem-forest text-xs font-bold uppercase tracking-wider mb-4">
+            <span className="inline-block px-3 py-1 rounded-full bg-kem-accent text-white text-xs font-bold uppercase tracking-wider mb-4">
               {study.industry}
             </span>
             <h1 className="font-display font-extrabold text-[clamp(1.75rem,4vw,2.75rem)] text-white leading-tight mb-4 text-balance">
@@ -64,7 +64,7 @@ const CaseStudyDetail = () => {
             {study.stack.map((tech) => (
               <span
                 key={tech}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-kem-stone border border-kem-forest/10 text-xs font-semibold text-kem-forest"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-kem-stone border border-slate-200 text-xs font-semibold text-slate-900"
               >
                 <img
                   src={`/images/tech-stack/${tech}.svg`}
@@ -92,26 +92,26 @@ const CaseStudyDetail = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
             >
-              <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-kem-forest/45 mb-3">{block.label}</h2>
-              <p className="text-kem-forest/75 text-lg leading-relaxed">{block.body}</p>
+              <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 mb-3">{block.label}</h2>
+              <p className="text-slate-600 text-lg leading-relaxed">{block.body}</p>
             </motion.div>
           ))}
 
-          <div className="rounded-2xl bg-kem-lime/35 border border-kem-forest/10 p-6 md:p-8 mb-12">
-            <h2 className="font-display font-extrabold text-lg text-kem-forest mb-4">Results</h2>
+          <div className="rounded-2xl bg-kem-accent-soft border border-slate-200 p-6 md:p-8 mb-12">
+            <h2 className="font-display font-extrabold text-lg text-slate-900 mb-4">Results</h2>
             <ul className="space-y-3">
               {study.outcome.map((item) => (
-                <li key={item} className="flex gap-3 text-kem-forest/80">
-                  <Check className="w-5 h-5 text-kem-forest shrink-0 mt-0.5" strokeWidth={2.25} />
+                <li key={item} className="flex gap-3 text-slate-700">
+                  <Check className="w-5 h-5 text-slate-900 shrink-0 mt-0.5" strokeWidth={2.25} />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          <blockquote className="border-l-[3px] border-kem-lime pl-6 mb-12">
-            <p className="text-kem-forest text-xl font-medium leading-relaxed mb-3">&ldquo;{study.quote}&rdquo;</p>
-            <cite className="text-kem-forest/55 text-sm not-italic">{study.role}</cite>
+          <blockquote className="border-l-[3px] border-kem-accent pl-6 mb-12">
+            <p className="text-slate-900 text-xl font-medium leading-relaxed mb-3">&ldquo;{study.quote}&rdquo;</p>
+            <cite className="text-slate-500 text-sm not-italic">{study.role}</cite>
           </blockquote>
 
           <Link to="/contact" className="landing-pill-primary inline-flex">

@@ -28,7 +28,7 @@ const Home = () => {
       />
 
       <FeatureSplit
-        bg="lime"
+        bg="sky-deep"
         reverse
         eyebrow="Scoping"
         title="Honest estimates, fast"

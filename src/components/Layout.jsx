@@ -4,6 +4,8 @@ import Navigation from './Navigation'
 import Footer from './Footer'
 import Preloader from './Preloader'
 import ScrollProgress from './ScrollProgress'
+import PremiumCursor from './premium/PremiumCursor'
+import FilmGrain from './premium/FilmGrain'
 import Lenis from 'lenis'
 
 const Layout = () => {
@@ -43,7 +45,9 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <div className="min-h-screen bg-white text-kem-forest landing-page">
+    <div className="min-h-screen bg-white text-slate-900 landing-page premium-shell">
+      <FilmGrain />
+      <PremiumCursor />
       <Preloader />
       <ScrollProgress />
       <Navigation />

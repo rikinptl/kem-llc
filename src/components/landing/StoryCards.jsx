@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import DisplayHeadline from '../premium/DisplayHeadline'
+import { fadeTransition } from '../../lib/motion'
 
 const STORIES = [
   {
@@ -13,7 +15,7 @@ const STORIES = [
     tag: 'Finance',
     quote: 'They rebuilt our monitoring stack and we finally sleep through deploy nights.',
     name: 'Engineering director',
-    bg: 'bg-kem-lime-soft',
+    bg: 'bg-kem-accent-soft',
   },
   {
     tag: 'Retail',
@@ -35,23 +37,26 @@ const StoryCards = () => {
     <section className="landing-section bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-end justify-between gap-6 mb-10">
-          <h2 className="landing-display text-[clamp(1.75rem,4vw,2.5rem)] normal-case max-w-xl">
-            For teams going places
-          </h2>
+          <DisplayHeadline
+            lines="For teams going places"
+            className="text-[clamp(1.75rem,4vw,2.5rem)] max-w-xl"
+          />
           <div className="hidden sm:flex gap-2">
             <button
               type="button"
               onClick={() => scroll(-1)}
-              className="w-11 h-11 rounded-full border border-kem-forest/15 flex items-center justify-center hover:bg-kem-stone transition-colors"
+              className="w-11 h-11 rounded-full border border-slate-200 flex items-center justify-center hover:bg-kem-stone premium-hover-lift"
               aria-label="Previous stories"
+              data-cursor="interactive"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               type="button"
               onClick={() => scroll(1)}
-              className="w-11 h-11 rounded-full border border-kem-forest/15 flex items-center justify-center hover:bg-kem-stone transition-colors"
+              className="w-11 h-11 rounded-full border border-slate-200 flex items-center justify-center hover:bg-kem-stone premium-hover-lift"
               aria-label="Next stories"
+              data-cursor="interactive"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -62,15 +67,15 @@ const StoryCards = () => {
           {STORIES.map((story, i) => (
             <motion.article
               key={story.tag}
-              className={`snap-start shrink-0 w-[min(100%,320px)] rounded-3xl p-8 ${story.bg}`}
-              initial={{ opacity: 0, y: 20 }}
+              className={`snap-start shrink-0 w-[min(100%,320px)] rounded-3xl p-8 premium-hover-lift ${story.bg}`}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={fadeTransition(i * 0.08, 0.8)}
             >
-              <p className="text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-4">{story.tag}</p>
-              <p className="text-kem-forest text-lg font-medium leading-snug mb-8">&ldquo;{story.quote}&rdquo;</p>
-              <p className="text-sm font-semibold text-kem-forest/70">{story.name}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">{story.tag}</p>
+              <p className="text-slate-900 text-lg font-medium leading-snug mb-8">&ldquo;{story.quote}&rdquo;</p>
+              <p className="text-sm font-semibold text-slate-600">{story.name}</p>
             </motion.article>
           ))}
         </div>

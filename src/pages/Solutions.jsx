@@ -8,7 +8,7 @@ const Solutions = () => (
     <PageHeader
       title="Solutions"
       subtitle="Full-service IT plus AI—agents, copilots, RAG, automation, cloud, security, dev, data, collaboration, and digital growth."
-      bg="lime"
+      bg="sky"
     />
     <SolutionsCatalog />
     <TechStack />

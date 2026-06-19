@@ -27,7 +27,7 @@ const GoogleReviews = () => (
       { icon: '🔔', title: 'Smart alerts', description: 'Never miss a critical review' },
     ]}
     bg="stone"
-    iconBg="bg-kem-lime-soft"
+    iconBg="bg-kem-accent-soft"
   />
 )
 

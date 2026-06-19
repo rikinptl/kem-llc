@@ -1,16 +1,17 @@
 import React from 'react'
 import { motion, useInView } from 'framer-motion'
+import { EASE_OUT } from '../lib/motion'
 
 const LineReveal = ({
   lines,
   as: Tag = 'h2',
   className = '',
   lineClassName = '',
-  stagger = 0.1,
-  duration = 0.5,
+  stagger = 0.09,
+  duration = 0.9,
 }) => {
   const ref = React.useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-15% 0px -15% 0px' })
+  const inView = useInView(ref, { once: true, margin: '-12% 0px -12% 0px' })
 
   if (!Array.isArray(lines)) lines = [lines]
   const getLineClass = (i) =>
@@ -22,9 +23,9 @@ const LineReveal = ({
         <span key={i} className="block overflow-hidden">
           <motion.span
             className={`block ${getLineClass(i)}`}
-            initial={{ y: '100%', opacity: 0 }}
-            animate={inView ? { y: 0, opacity: 1 } : { y: '100%', opacity: 0 }}
-            transition={{ duration, delay: i * stagger, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ y: '108%', opacity: 0 }}
+            animate={inView ? { y: 0, opacity: 1 } : { y: '108%', opacity: 0 }}
+            transition={{ duration, delay: i * stagger, ease: EASE_OUT }}
           >
             {line}
           </motion.span>

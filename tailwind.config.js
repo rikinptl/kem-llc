@@ -25,14 +25,15 @@ export default {
         'accent': '#00D4FF',
         'accent-dim': '#00A8CC',
         'accent-glow': 'rgba(0, 212, 255, 0.4)',
-        // Wise-inspired landing palette (KEM fintech feel)
-        'kem-lime': '#9FE870',
-        'kem-lime-soft': '#C5F0A8',
-        'kem-forest': '#163300',
-        'kem-forest-light': '#234414',
-        'kem-sky': '#E8F2FB',
-        'kem-sky-deep': '#D4E8FA',
-        'kem-stone': '#F2F2F2',
+        // KEM brand palette — slate ink + blue accent
+        'kem-accent': '#2563EB',
+        'kem-accent-light': '#60A5FA',
+        'kem-accent-soft': '#EFF6FF',
+        'kem-accent-muted': '#DBEAFE',
+        'kem-ink': '#111827',
+        'kem-sky': '#F1F5F9',
+        'kem-sky-deep': '#E2E8F0',
+        'kem-stone': '#F8FAFC',
         // Legacy aliases for gradual migration
         'midnight-blue': '#0A0A0B',
         'stark-white': '#FAFAFA',

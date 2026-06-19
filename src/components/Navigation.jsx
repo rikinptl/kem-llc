@@ -33,15 +33,15 @@ const Navigation = () => {
       style={{
         backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.92)' : 'rgba(255, 255, 255, 0.78)',
         backdropFilter: 'blur(20px) saturate(180%)',
-        borderColor: 'rgba(22, 51, 0, 0.08)',
-        boxShadow: isScrolled ? '0 4px 24px -8px rgba(22,51,0,0.08)' : 'none',
+        borderColor: 'rgba(15, 23, 42, 0.08)',
+        boxShadow: isScrolled ? '0 4px 24px -8px rgba(15,23,42,0.08)' : 'none',
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center">
             <motion.span
-              className="font-display font-extrabold text-xl tracking-tight text-kem-forest"
+              className="font-display font-extrabold text-xl tracking-tight text-slate-900"
               whileHover={{ scale: 1.02 }}
             >
               KEM
@@ -60,7 +60,7 @@ const Navigation = () => {
           </div>
 
           <motion.button
-            className="md:hidden p-2 text-kem-forest"
+            className="md:hidden p-2 text-slate-900"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.9 }}
@@ -81,14 +81,14 @@ const Navigation = () => {
           initial={false}
           animate={{ height: isMobileMenuOpen ? 'auto' : 0, opacity: isMobileMenuOpen ? 1 : 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden overflow-hidden border-t border-kem-forest/10"
+          className="md:hidden overflow-hidden border-t border-slate-200"
         >
           <div className="py-6 flex flex-col gap-4">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
-                className="font-medium text-sm tracking-tight text-kem-forest/80 hover:text-kem-forest transition-colors"
+                className="font-medium text-sm tracking-tight text-slate-700 hover:text-slate-900 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
@@ -107,16 +107,16 @@ const Navigation = () => {
 const NavLink = ({ to, children, isActive }) => (
   <Link
     to={to}
-    className="navlink relative font-medium text-sm tracking-tight text-kem-forest/80 hover:text-kem-forest transition-colors block"
+    className="navlink relative font-medium text-sm tracking-tight text-slate-700 hover:text-slate-900 transition-colors block"
   >
-    <motion.span className="inline-block" whileHover={{ x: 4 }} transition={{ duration: 0.25 }}>
+    <motion.span className="inline-block" whileHover={{ x: 2 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.span>
     <motion.span
-      className="navlink-shape absolute bottom-0 left-0 h-0.5 rounded-full bg-kem-forest"
+      className="navlink-shape absolute bottom-0 left-0 h-0.5 rounded-full bg-kem-accent"
       initial={{ width: isActive ? '100%' : '0%' }}
       whileHover={{ width: '100%' }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     />
   </Link>
 )

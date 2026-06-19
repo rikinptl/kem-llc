@@ -1,6 +1,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Lock, Server, ShieldCheck } from 'lucide-react'
+import DisplayHeadline from '../premium/DisplayHeadline'
+import RevealFade from '../premium/RevealFade'
+import { fadeTransition } from '../../lib/motion'
 
 const FEATURES = [
   {
@@ -23,34 +26,11 @@ const FEATURES = [
 const SecurityBlock = () => (
   <section className="landing-section bg-kem-stone">
     <div className="max-w-7xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="landing-display text-[clamp(1.75rem,4vw,2.5rem)] normal-case mb-4">
-            Disappoint downtime
-          </h2>
-          <p className="text-kem-forest/70 text-lg max-w-md">
-            Resilience isn&apos;t a feature—it&apos;s how we architect every stack we touch.
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="flex justify-center lg:justify-end"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          aria-hidden
-        >
-          <div className="relative w-40 h-48">
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-20 rounded-b-2xl bg-kem-sky-deep border-4 border-kem-forest/20" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-28 rounded-full border-[10px] border-kem-forest bg-kem-sky flex items-center justify-center">
-              <Lock className="w-8 h-8 text-kem-forest" />
-            </div>
-          </div>
-        </motion.div>
+      <div className="max-w-2xl mb-14 md:mb-16">
+        <DisplayHeadline lines="Disappoint downtime" className="text-[clamp(1.75rem,4vw,2.5rem)] mb-4" />
+        <RevealFade className="text-slate-600 text-lg leading-relaxed" delay={0.08}>
+          Resilience isn&apos;t a feature—it&apos;s how we architect every stack we touch.
+        </RevealFade>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
@@ -58,16 +38,16 @@ const SecurityBlock = () => (
           <motion.div
             key={title}
             className="landing-card p-8"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.08 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={fadeTransition(i * 0.07, 0.8)}
           >
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-kem-lime/50 mb-5">
-              <Icon className="w-6 h-6 text-kem-forest" />
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-kem-accent/10 mb-5">
+              <Icon className="w-6 h-6 text-slate-900" />
             </span>
-            <h3 className="font-display font-bold text-lg text-kem-forest mb-3">{title}</h3>
-            <p className="text-kem-forest/65 text-sm leading-relaxed">{body}</p>
+            <h3 className="font-display font-bold text-lg text-slate-900 mb-3">{title}</h3>
+            <p className="text-slate-600 text-sm leading-relaxed">{body}</p>
           </motion.div>
         ))}
       </div>

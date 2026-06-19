@@ -20,9 +20,9 @@ const CaseStudies = () => (
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
-        <div className="absolute inset-0 bg-kem-forest/75" />
+        <div className="absolute inset-0 bg-slate-950/80" />
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 py-14 md:py-20">
-          <p className="text-kem-lime text-xs font-bold uppercase tracking-[0.2em] mb-3">How we solve hard problems</p>
+          <p className="text-kem-accent-light text-xs font-bold uppercase tracking-[0.2em] mb-3">How we solve hard problems</p>
           <p className="text-white/90 text-lg md:text-xl max-w-2xl leading-relaxed font-light">
             Workarounds that held up in production—and innovations we&apos;d use again on the next engagement.
           </p>
@@ -32,17 +32,8 @@ const CaseStudies = () => (
 
     <section className="landing-section pt-8 md:pt-12 bg-white">
       <div className="max-w-7xl mx-auto">
-        <p className="text-center text-kem-forest/50 text-sm mb-10 max-w-xl mx-auto">
-          Client names withheld by agreement. Photos from{' '}
-          <a
-            href="https://unsplash.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-kem-forest"
-          >
-            Unsplash
-          </a>
-          . Stack logos from our tech library.
+        <p className="text-center text-slate-500 text-sm mb-10 max-w-xl mx-auto">
+          Client names withheld by agreement.
         </p>
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {CASE_STUDIES.map((study, index) => (
@@ -52,10 +43,10 @@ const CaseStudies = () => (
       </div>
     </section>
 
-    <section className="landing-section bg-kem-lime border-t border-kem-forest/10 text-center">
+    <section className="landing-section bg-kem-sky-deep border-t border-slate-200 text-center">
       <div className="max-w-2xl mx-auto">
-        <h2 className="font-display font-extrabold text-2xl text-kem-forest mb-4">Have a problem worth documenting?</h2>
-        <p className="text-kem-forest/70 mb-8 leading-relaxed">
+        <h2 className="font-display font-extrabold text-2xl text-slate-900 mb-4">Have a problem worth documenting?</h2>
+        <p className="text-slate-600 mb-8 leading-relaxed">
           We take on messy integrations, legacy constraints, and &ldquo;impossible&rdquo; timelines—then write up what worked.
         </p>
         <Link to="/contact" className="landing-pill-primary">

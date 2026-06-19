@@ -60,13 +60,13 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.08 }}
     >
-      <div className="rounded-3xl border border-kem-forest/10 bg-white p-6 md:p-8 shadow-[0_8px_40px_-16px_rgba(22,51,0,0.12)]">
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-[0_8px_40px_-16px_rgba(15,23,42,0.1)]">
         {showHeader && (
           <>
-            <h2 className="font-display font-extrabold text-xl md:text-2xl text-kem-forest tracking-tight mb-2">
+            <h2 className="font-display font-extrabold text-xl md:text-2xl text-slate-900 tracking-tight mb-2">
               Project details
             </h2>
-            <p className="text-kem-forest/55 text-sm mb-6">
+            <p className="text-slate-500 text-sm mb-6">
               A few fields—we&apos;ll follow up with next steps, not a generic pitch deck.
             </p>
           </>
@@ -75,7 +75,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+              <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Name *
               </label>
               <input
@@ -90,7 +90,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+              <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Email *
               </label>
               <input
@@ -105,7 +105,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
               />
             </div>
             <div>
-              <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+              <label htmlFor="phone" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Phone
               </label>
               <input
@@ -119,7 +119,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
               />
             </div>
             <div>
-              <label htmlFor="company" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+              <label htmlFor="company" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Company
               </label>
               <input
@@ -135,7 +135,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-1.5">
+            <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
               Message *
             </label>
             <textarea
@@ -154,7 +154,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-3 rounded-xl bg-kem-lime/40 border border-kem-forest/15 text-kem-forest text-sm"
+              className="p-3 rounded-xl bg-kem-accent-soft border border-slate-200 text-slate-900 text-sm"
             >
               Message sent—we&apos;ll be in touch soon.
             </motion.div>

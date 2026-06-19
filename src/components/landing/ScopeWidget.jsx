@@ -23,9 +23,9 @@ const ScopeWidget = () => {
 
   return (
     <div className="landing-card p-6 md:p-8 max-w-md mx-auto lg:ml-auto">
-      <p className="text-sm font-semibold text-kem-forest/60 mb-6">Rough scope estimator</p>
+      <p className="text-sm font-semibold text-slate-500 mb-6">Rough scope estimator</p>
 
-      <label className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-2">Focus</label>
+      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Focus</label>
       <div className="flex gap-2 mb-6 flex-wrap">
         {AREAS.map((a, i) => (
           <button
@@ -33,7 +33,7 @@ const ScopeWidget = () => {
             type="button"
             onClick={() => setAreaIdx(i)}
             className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-              i === areaIdx ? 'bg-kem-forest text-kem-lime' : 'bg-kem-stone text-kem-forest/70 hover:bg-kem-sky'
+              i === areaIdx ? 'bg-slate-900 text-white' : 'bg-kem-stone text-slate-600 hover:bg-kem-sky'
             }`}
           >
             {a.label}
@@ -41,11 +41,11 @@ const ScopeWidget = () => {
         ))}
       </div>
 
-      <label className="block text-xs font-bold uppercase tracking-wider text-kem-forest/50 mb-2">Timeline</label>
+      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Timeline</label>
       <select
         value={timelineIdx}
         onChange={(e) => setTimelineIdx(Number(e.target.value))}
-        className="w-full mb-6 rounded-2xl border border-kem-forest/15 bg-white px-4 py-3 text-kem-forest font-medium focus:outline-none focus:ring-2 focus:ring-kem-lime"
+        className="w-full mb-6 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-kem-accent/30"
       >
         {TIMELINES.map((t, i) => (
           <option key={t.id} value={i}>
@@ -55,12 +55,12 @@ const ScopeWidget = () => {
       </select>
 
       <div className="flex items-center justify-center gap-3 py-4 mb-4 rounded-2xl bg-kem-sky/60">
-        <ArrowRightLeft className="w-5 h-5 text-kem-forest/50" />
-        <span className="text-3xl font-display font-extrabold text-kem-forest">{effortScore}</span>
-        <span className="text-sm text-kem-forest/60">complexity index</span>
+        <ArrowRightLeft className="w-5 h-5 text-slate-500" />
+        <span className="text-3xl font-display font-extrabold text-slate-900">{effortScore}</span>
+        <span className="text-sm text-slate-500">complexity index</span>
       </div>
 
-      <p className="text-xs text-kem-forest/50 leading-relaxed">
+      <p className="text-xs text-slate-500 leading-relaxed">
         Illustrative only—real scope depends on stack, compliance, and integrations. We&apos;ll refine on a call.
       </p>
     </div>

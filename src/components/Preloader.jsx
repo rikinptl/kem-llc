@@ -67,7 +67,7 @@ const Preloader = () => {
         aria-hidden={!isVisible}
       >
         <motion.span
-          className="font-display font-extrabold tracking-tight text-kem-forest"
+          className="font-display font-extrabold tracking-tight text-slate-900"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)' }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

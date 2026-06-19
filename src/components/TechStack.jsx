@@ -23,7 +23,7 @@ const techStack = [
 ]
 
 const TechStack = () => (
-  <section className="landing-section bg-kem-lime border-y border-kem-forest/10">
+  <section className="landing-section bg-kem-sky border-y border-slate-200">
     <div className="max-w-7xl mx-auto">
       <motion.div
         className="mb-14 text-center"
@@ -32,7 +32,7 @@ const TechStack = () => (
         viewport={{ once: true }}
       >
         <h2 className="landing-display text-[clamp(1.5rem,3.5vw,2.25rem)] normal-case mb-4">Our tech stack</h2>
-        <p className="text-kem-forest/65 text-lg max-w-2xl mx-auto">
+        <p className="text-slate-600 text-lg max-w-2xl mx-auto">
           Built with industry-leading tools and technologies
         </p>
       </motion.div>
@@ -57,7 +57,7 @@ const TechStack = () => (
                 }}
               />
             </div>
-            <p className="mt-2 text-xs font-semibold text-kem-forest/70 text-center">{tech.name}</p>
+            <p className="mt-2 text-xs font-semibold text-slate-600 text-center">{tech.name}</p>
           </motion.div>
         ))}
       </div>
