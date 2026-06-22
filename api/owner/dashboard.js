@@ -1,11 +1,11 @@
-import { verifyOwnerRequest } from '../lib/verifyOwner.js'
-import { getDashboardData } from '../lib/owner/dashboard.js'
+import { verifyOwnerRequest } from '../../server/lib/verifyOwner.js'
+import { getDashboardData } from '../../server/lib/owner/dashboard.js'
 import {
   applyCors,
   checkRateLimit,
   getClientIp,
   rejectDisallowedOrigin,
-} from '../lib/security.js'
+} from '../../server/lib/security.js'
 
 export default async function handler(req, res) {
   applyCors(req, res, {

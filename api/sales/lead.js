@@ -1,6 +1,6 @@
-import { verifySalesRequest } from '../lib/verifyAuth.js'
-import { fetchLeadsFromSheet, updateLeadOutreach } from '../lib/sheets/leads.js'
-import { applyCors, checkRateLimit, getClientIp, rejectDisallowedOrigin } from '../lib/security.js'
+import { verifySalesRequest } from '../../server/lib/verifyAuth.js'
+import { fetchLeadsFromSheet, updateLeadOutreach } from '../../server/lib/sheets/leads.js'
+import { applyCors, checkRateLimit, getClientIp, rejectDisallowedOrigin } from '../../server/lib/security.js'
 
 function findLeadRow(leads, name, phone) {
   const nameNorm = String(name || '').trim().toLowerCase()

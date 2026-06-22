@@ -1,0 +1,5 @@
+kem-astro/
+.vercel/
+.env
+.env.local
+.env.*.local

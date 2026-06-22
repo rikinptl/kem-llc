@@ -8,7 +8,7 @@ import {
   safeSubjectName,
   sanitizeContactInput,
   validateContactPayload,
-} from './lib/security.js'
+} from '../server/lib/security.js'
 
 export default async function handler(req, res) {
   applyCors(req, res, { methods: 'POST, OPTIONS', headers: 'Content-Type' })

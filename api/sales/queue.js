@@ -1,7 +1,7 @@
-import { verifySalesRequest } from '../lib/verifyAuth.js'
-import { fetchLeadsFromSheet } from '../lib/sheets/leads.js'
-import { buildSalesQueue, salesQueueStats } from '../lib/sales/queue.js'
-import { applyCors, checkRateLimit, getClientIp, rejectDisallowedOrigin } from '../lib/security.js'
+import { verifySalesRequest } from '../../server/lib/verifyAuth.js'
+import { fetchLeadsFromSheet } from '../../server/lib/sheets/leads.js'
+import { buildSalesQueue, salesQueueStats } from '../../server/lib/sales/queue.js'
+import { applyCors, checkRateLimit, getClientIp, rejectDisallowedOrigin } from '../../server/lib/security.js'
 
 export default async function handler(req, res) {
   applyCors(req, res, {
