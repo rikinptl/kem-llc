@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "firebase": {
+      "command": "/Users/rknptl/Desktop/kem llc website /scripts/firebase-mcp.sh",
+      "args": []
+    }
+  }
+}

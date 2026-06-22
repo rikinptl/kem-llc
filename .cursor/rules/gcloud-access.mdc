@@ -1,0 +1,97 @@
+---
+description: Authenticate and use gcloud CLI for KEM GCP/Firebase work
+globs: scripts/**,firebase.json,firestore.rules,.firebaserc,docs/GCP*.md,.cursor/mcp.json
+alwaysApply: false
+---
+
+# gcloud CLI access (KEM LLC)
+
+## Install (macOS)
+
+```bash
+brew install --cask google-cloud-sdk
+npm install -g firebase-tools
+export PATH="/opt/homebrew/bin:$PATH"
+```
+
+## Login (required once per machine)
+
+**Browser opens automatically:**
+```bash
+gcloud auth login
+firebase login
+```
+
+**Headless / remote (Cursor agent or SSH):**
+```bash
+gcloud auth login --no-launch-browser
+```
+1. Open the printed Google URL in your browser.
+2. Copy the **one-time verification code** (not a password — do not commit it).
+3. Paste it into the terminal when prompted.
+
+OAuth verification codes expire quickly and are **never** stored in `.env`. They complete CLI login only.
+
+## Verify session
+
+```bash
+gcloud auth list
+gcloud config get-value project
+gcloud projects list
+```
+
+## Default project
+
+```bash
+gcloud config set project kem-llc-web
+```
+
+Override for scripts: `GCP_PROJECT_ID=your-project-id ./scripts/setup-gcp-auth.sh`
+
+## Run KEM GCP setup
+
+```bash
+cd "/Users/rknptl/Desktop/kem llc website "
+./scripts/setup-gcp-auth.sh
+```
+
+## Firebase CLI via gcloud (no `firebase login` needed)
+
+```bash
+./scripts/firebase-gcp.sh status
+./scripts/firebase-gcp.sh deploy-rules
+```
+
+Uses `gcloud auth print-access-token` + vars in `.env.local`.
+
+## Firebase MCP (Cursor)
+
+Project MCP config: `.cursor/mcp.json` → runs `scripts/firebase-mcp.sh`.
+
+Auth is automatic via **Application Default Credentials** (`~/.config/gcloud/application_default_credentials.json`). One-time setup:
+
+```bash
+./scripts/firebase-auth-setup.sh
+# or: gcloud auth application-default login
+```
+
+Optional fallback: `firebase login:ci --no-localhost` → add `FIREBASE_TOKEN=...` to `.env.local` (never commit).
+
+Reload Cursor after MCP config changes.
+
+Useful MCP tools: `firebase_get_environment`, `firebase_get_sdk_config`, `firebase_get_security_rules`, `firebase_deploy`.
+
+
+| Variable | File | Purpose |
+|----------|------|---------|
+| `VITE_FIREBASE_*` | `.env.local` / Vercel | Firebase client config (public keys) |
+| `GCP_PROJECT_ID`, `GCP_PROJECT_NUMBER` | `.env.local` | Scripts + API calls |
+| `FIREBASE_WEB_APP_ID` | `.env.local` | Firebase web app reference |
+| `FIREBASE_TOKEN` | `.env.local` optional | Only from `firebase login:ci` — rarely needed |
+| OAuth verification code | **Never** | One-time; paste at CLI prompt only |
+
+## Troubleshooting
+
+- `No credentialed accounts` → run `gcloud auth login` again.
+- Code rejected → start a **new** `gcloud auth login --no-launch-browser` (codes are single-use).
+- Firebase deploy fails → run `firebase login` with the same Google account.

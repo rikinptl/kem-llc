@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpRight, Clock, Mail, Phone } from 'lucide-react'
+import { CONTACT_LIMITS, validateContactForm } from '../lib/validation'
 
 const ContactForm = ({ showHeader = true, className = '' }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
     company: '',
     message: '',
   })
+  const [honeypot, setHoneypot] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
 
@@ -22,11 +24,18 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
     setIsSubmitting(true)
     setSubmitStatus(null)
 
+    const validationError = validateContactForm(formData)
+    if (validationError) {
+      setSubmitStatus('error')
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, website: honeypot }),
         signal: AbortSignal.timeout(15000),
       })
 
@@ -73,6 +82,16 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute opacity-0 pointer-events-none h-0 w-0 overflow-hidden"
+          />
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
@@ -85,6 +104,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
                 value={formData.name}
                 onChange={handleChange}
                 required
+                maxLength={CONTACT_LIMITS.name}
                 className="form-input"
                 placeholder="Your name"
               />
@@ -100,6 +120,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                maxLength={CONTACT_LIMITS.email}
                 className="form-input"
                 placeholder="you@company.com"
               />
@@ -114,6 +135,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
+                maxLength={CONTACT_LIMITS.phone}
                 className="form-input"
                 placeholder="+1 (555) 123-4567"
               />
@@ -128,6 +150,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
                 name="company"
                 value={formData.company}
                 onChange={handleChange}
+                maxLength={CONTACT_LIMITS.company}
                 className="form-input"
                 placeholder="Company name"
               />
@@ -144,6 +167,7 @@ const ContactForm = ({ showHeader = true, className = '' }) => {
               value={formData.message}
               onChange={handleChange}
               required
+              maxLength={CONTACT_LIMITS.message}
               rows={5}
               className="form-input resize-none"
               placeholder="What are you trying to solve? Timeline, stack, team size…"

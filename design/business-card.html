@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KEM — Business Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --kem-accent: #2563eb;
+        --kem-accent-light: #60a5fa;
+        --kem-ink: #111827;
+        --kem-slate-950: #020617;
+        --kem-slate-900: #0f172a;
+        --kem-slate-800: #1e293b;
+        --white: #fafafa;
+        --white-65: rgba(255, 255, 255, 0.65);
+        --white-45: rgba(255, 255, 255, 0.45);
+        --card-w: 3.5in;
+        --card-h: 2in;
+        --bleed: 0.125in;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #e2e8f0;
+        color: var(--kem-ink);
+        min-height: 100vh;
+        padding: 2rem;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page-header {
+        max-width: 980px;
+        margin: 0 auto 2rem;
+      }
+
+      .page-header h1 {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+      }
+
+      .page-header p {
+        color: #64748b;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        max-width: 42rem;
+      }
+
+      .cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 3rem;
+      }
+
+      .card-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-label {
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+
+      .card {
+        width: var(--card-w);
+        height: var(--card-h);
+        position: relative;
+        overflow: hidden;
+        border-radius: 0;
+        box-shadow:
+          0 24px 48px -12px rgba(15, 23, 42, 0.18),
+          0 0 0 1px rgba(15, 23, 42, 0.08);
+      }
+
+      /* —— FRONT —— */
+      .card-front {
+        background: linear-gradient(135deg, var(--kem-slate-950) 0%, var(--kem-slate-900) 45%, #172554 100%);
+        color: var(--white);
+        padding: 0.42in 0.38in;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card-front::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.045) 1px, transparent 0);
+        background-size: 18px 18px;
+        pointer-events: none;
+      }
+
+      .card-front::after {
+        content: '';
+        position: absolute;
+        top: -20%;
+        right: -15%;
+        width: 55%;
+        height: 80%;
+        background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.22) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .front-top {
+        position: relative;
+        z-index: 1;
+      }
+
+      .accent-bar {
+        width: 1.35rem;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--kem-accent), var(--kem-accent-light));
+        margin-bottom: 0.55rem;
+      }
+
+      .logo {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.65rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        color: var(--kem-accent-light);
+      }
+
+      .tagline {
+        margin-top: 0.35rem;
+        font-size: 0.58rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        color: var(--white-65);
+      }
+
+      .front-bottom {
+        position: relative;
+        z-index: 1;
+      }
+
+      .acronym {
+        font-size: 0.5rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--white-45);
+        margin-bottom: 0.2rem;
+      }
+
+      .descriptor {
+        font-size: 0.52rem;
+        line-height: 1.45;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 2.4in;
+      }
+
+      /* —— BACK —— */
+      .card-back {
+        background: var(--white);
+        padding: 0.38in 0.38in;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card-back::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--kem-accent), var(--kem-accent-light));
+      }
+
+      .back-name {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--kem-ink);
+        line-height: 1.1;
+      }
+
+      .back-title {
+        margin-top: 0.12rem;
+        font-size: 0.52rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--kem-accent);
+      }
+
+      .back-services {
+        margin-top: 0.35rem;
+        font-size: 0.5rem;
+        line-height: 1.5;
+        color: #64748b;
+        max-width: 2.5in;
+      }
+
+      .contact {
+        display: flex;
+        flex-direction: column;
+        gap: 0.18rem;
+      }
+
+      .contact a,
+      .contact span {
+        font-size: 0.52rem;
+        font-weight: 500;
+        color: var(--kem-ink);
+        text-decoration: none;
+        line-height: 1.35;
+      }
+
+      .contact a:hover {
+        color: var(--kem-accent);
+      }
+
+      .back-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 0.5rem;
+      }
+
+      .website {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--kem-accent);
+      }
+
+      .llc {
+        font-size: 0.45rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #94a3b8;
+      }
+
+      /* —— PRINT —— */
+      @media print {
+        @page {
+          size: 3.5in 2in;
+          margin: 0;
+        }
+
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .page-header,
+        .print-note {
+          display: none !important;
+        }
+
+        .cards {
+          display: block;
+          margin: 0;
+        }
+
+        .card-wrap {
+          page-break-after: always;
+          break-after: page;
+        }
+
+        .card-label {
+          display: none;
+        }
+
+        .card {
+          box-shadow: none;
+          margin: 0;
+        }
+      }
+
+      .print-note {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 1rem 1.25rem;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .print-note strong {
+        color: var(--kem-ink);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>KEM Business Card</h1>
+      <p>
+        Standard US size (3.5″ × 2″). Edit the name and title on the back, then print at 100% scale — no “fit to
+        page.” Export to PDF for Vistaprint, Moo, or local print shops.
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card-wrap">
+        <span class="card-label">Front</span>
+        <article class="card card-front" aria-label="KEM business card front">
+          <div class="front-top">
+            <div class="accent-bar" aria-hidden="true"></div>
+            <p class="logo">KEM</p>
+            <p class="tagline">Intelligence, uncomplicated</p>
+          </div>
+          <div class="front-bottom">
+            <p class="acronym">Knowledge · Engineered · Motion</p>
+            <p class="descriptor">Automation, infrastructure, and software for teams that ship.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="card-wrap">
+        <span class="card-label">Back</span>
+        <article class="card card-back" aria-label="KEM business card back">
+          <div>
+            <p class="back-name">Your Name</p>
+            <p class="back-title">Founder · IT Automation</p>
+            <p class="back-services">Managed IT · Cloud · Cybersecurity · Custom Development</p>
+          </div>
+
+          <div class="contact">
+            <a href="mailto:kem.sales.us@gmail.com">kem.sales.us@gmail.com</a>
+            <a href="tel:+14694652048">+1 (469) 465-2048</a>
+            <span>Dallas–Fort Worth, TX · USA</span>
+          </div>
+
+          <div class="back-footer">
+            <p class="website">kemtrade.us</p>
+            <p class="llc">KEM LLC</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="print-note">
+      <strong>Print tips:</strong> Use Chrome → Print → Save as PDF. Set margins to None and scale to 100%. For bleed
+      printing, add 0.125″ on each side in your print vendor’s template. Colors: front matches site dark panels
+      (slate-950 + blue gradient); accent #2563EB / #60A5FA; fonts Syne + Inter.
+    </div>
+  </body>
+</html>

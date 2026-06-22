@@ -31,3 +31,4 @@ server/.env
 
 # Local Astro sandbox (Jetstream fork; large). Omit from git unless you intentionally version it.
 kem-astro/
+.vercel

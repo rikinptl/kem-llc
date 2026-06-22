@@ -54,6 +54,12 @@ const Navigation = () => {
                 {link.label}
               </NavLink>
             ))}
+            <Link
+              to="/login"
+              className="font-medium text-sm text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Sign in
+            </Link>
             <Link to="/contact" className="landing-pill-primary !px-5 !py-2.5 !text-sm">
               Get started
             </Link>
@@ -94,6 +100,13 @@ const Navigation = () => {
                 {link.label}
               </Link>
             ))}
+            <Link
+              to="/login"
+              className="font-medium text-sm text-slate-700 hover:text-slate-900"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Sign in
+            </Link>
             <Link to="/contact" className="landing-pill-primary w-fit" onClick={() => setIsMobileMenuOpen(false)}>
               Get started
             </Link>

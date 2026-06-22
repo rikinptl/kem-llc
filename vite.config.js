@@ -16,12 +16,9 @@ export default defineConfig({
     watch: {
       ignored: ['**/kem-astro/**'],
     },
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
-      },
-    },
+  },
+  optimizeDeps: {
+    include: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
   },
   build: {
     outDir: 'dist',
