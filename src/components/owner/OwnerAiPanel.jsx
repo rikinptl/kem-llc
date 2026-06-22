@@ -24,7 +24,7 @@ export default function OwnerAiPanel({ aiCost, stats }) {
                 <>
                   At <span className="font-mono font-semibold">${aiCost.costPerSiteUsd.toFixed(2)}</span> per site,
                   your <span className="font-semibold text-emerald-700">{formatUsd(aiCost.balanceUsd)}</span> balance
-                  covers about <span className="font-semibold">{affordable}</span> more copy + site generations.
+                  covers about <span className="font-semibold">{affordable}</span> more site generations.
                 </>
               ) : (
                 aiCost.error || 'Set DEEPSEEK_API_KEY to see live balance and capacity.'
@@ -64,7 +64,7 @@ export default function OwnerAiPanel({ aiCost, stats }) {
                 {formatUsd(aiCost.estimatedSpendUsd)}
               </p>
               <p className="text-xs text-slate-500 mt-1">
-                {aiCost.sitesWithCopy} sites × ${aiCost.costPerSiteUsd.toFixed(2)}
+                {aiCost.sitesBuilt} live sites × ${aiCost.costPerSiteUsd.toFixed(2)}
               </p>
             </div>
           </div>

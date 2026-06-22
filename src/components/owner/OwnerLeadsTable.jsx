@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react'
-import { isCopyDone, isLive, isReached, statusKind } from '../../lib/ownerFormat'
+import { isLive, isReached, isScrapedDone, statusKind } from '../../lib/ownerFormat'
 import { ExternalLink, FilterPills, Panel, StatusPill } from './OwnerUi'
 
 const FILTERS = [
   { id: 'all', label: 'All' },
   { id: 'live', label: 'Live' },
   { id: 'ready', label: 'Ready' },
-  { id: 'pending', label: 'Pending copy' },
+  { id: 'pending', label: 'Pending scrape' },
   { id: 'outreach', label: 'Needs outreach' },
 ]
 
@@ -28,8 +28,8 @@ export default function OwnerLeadsTable({ leads }) {
       const matchesFilter =
         filter === 'all' ||
         (filter === 'live' && isLive(lead)) ||
-        (filter === 'pending' && !isCopyDone(lead)) ||
-        (filter === 'ready' && isCopyDone(lead) && !isLive(lead)) ||
+        (filter === 'pending' && !isScrapedDone(lead)) ||
+        (filter === 'ready' && isScrapedDone(lead) && !isLive(lead)) ||
         (filter === 'outreach' && isLive(lead) && !lead.decline && !isReached(lead))
 
       return matchesQuery && matchesFilter
@@ -63,14 +63,13 @@ export default function OwnerLeadsTable({ leads }) {
               <th className="pb-3 pr-3">Follow up</th>
               <th className="pb-3 pr-3">Comments</th>
               <th className="pb-3 pr-3">Scraped</th>
-              <th className="pb-3 pr-3">Copy</th>
               <th className="pb-3">Links</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={12} className="py-12 text-center text-slate-400">
+                <td colSpan={11} className="py-12 text-center text-slate-400">
                   No leads match your filters. Run the GitHub Actions pipeline to populate the sheet.
                 </td>
               </tr>
@@ -98,9 +97,6 @@ export default function OwnerLeadsTable({ leads }) {
                   </td>
                   <td className="py-3 pr-3">
                     <StatusPill value={lead.scrapedStatus || '—'} kind={statusKind(lead.scrapedStatus, 'scraped')} />
-                  </td>
-                  <td className="py-3 pr-3">
-                    <StatusPill value={lead.copyStatus || '—'} kind={statusKind(lead.copyStatus, 'copy')} />
                   </td>
                   <td className="py-3">
                     <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs">

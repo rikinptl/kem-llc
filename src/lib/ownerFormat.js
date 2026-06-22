@@ -36,8 +36,8 @@ export function isLive(lead) {
   return Boolean(lead.liveUrl?.trim().startsWith('http'))
 }
 
-export function isCopyDone(lead) {
-  return (lead.copyStatus || '').trim().toLowerCase() === 'done'
+export function isScrapedDone(lead) {
+  return (lead.scrapedStatus || '').trim().toLowerCase() === 'done'
 }
 
 export function isReached(lead) {

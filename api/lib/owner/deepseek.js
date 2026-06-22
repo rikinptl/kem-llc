@@ -42,24 +42,24 @@ async function fetchDeepSeekBalance() {
   }
 }
 
-function estimateAiUsage(copyDone) {
+function estimateAiUsage(sitesBuilt) {
   const costPerSiteUsd = Number.parseFloat(process.env.DEEPSEEK_EST_COST_PER_SITE ?? '0.03')
   const tokensPerSite = Number.parseInt(process.env.DEEPSEEK_EST_TOKENS_PER_SITE ?? '4500', 10)
   const safeCost = Number.isFinite(costPerSiteUsd) && costPerSiteUsd > 0 ? costPerSiteUsd : 0.03
   const safeTokens = Number.isFinite(tokensPerSite) ? tokensPerSite : 4500
 
   return {
-    sitesWithCopy: copyDone,
-    estimatedTokens: copyDone * safeTokens,
-    estimatedSpendUsd: Math.round(copyDone * safeCost * 100) / 100,
+    sitesBuilt,
+    estimatedTokens: sitesBuilt * safeTokens,
+    estimatedSpendUsd: Math.round(sitesBuilt * safeCost * 100) / 100,
     costPerSiteUsd: safeCost,
     tokensPerSite: safeTokens,
     sitesAffordable: null,
   }
 }
 
-export async function buildAiCostStats(copyDone) {
-  const estimate = estimateAiUsage(copyDone)
+export async function buildAiCostStats(sitesBuilt) {
+  const estimate = estimateAiUsage(sitesBuilt)
   const configured = Boolean(process.env.DEEPSEEK_API_KEY)
 
   if (!configured) {

@@ -41,7 +41,6 @@ function rowToLead(row, col) {
     city: cell(row, col, 'City'),
     address: cell(row, col, 'Address'),
     scrapedStatus: cell(row, col, 'Scraped Status'),
-    copyStatus: cell(row, col, 'DeepSeek Copy Status'),
     liveUrl: cell(row, col, 'Live URL'),
     mapsUrl: cell(row, col, 'Google Maps URL'),
     siteCreatedAt: cell(row, col, 'Site Created').trim() || null,

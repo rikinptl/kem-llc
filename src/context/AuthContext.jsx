@@ -1,13 +1,47 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import {
+  getRedirectResult,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithRedirect,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { auth, db, googleProvider, isEmailAllowed, isFirebaseConfigured } from '../lib/firebase'
+import {
+  friendlyAuthError,
+  prefersRedirectSignIn,
+  shouldRetryWithRedirect,
+} from '../lib/authSignIn'
 
 const AuthContext = createContext(null)
+
+async function persistUserProfile(firebaseUser) {
+  if (!firebaseUser || !db) return
+  try {
+    await setDoc(
+      doc(db, 'users', firebaseUser.uid),
+      {
+        email: firebaseUser.email,
+        name: firebaseUser.displayName || '',
+        photoURL: firebaseUser.photoURL || '',
+        createdAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp(),
+      },
+      { merge: true }
+    )
+  } catch {
+    // Non-blocking — auth still valid if Firestore write fails
+  }
+}
+
+async function rejectUnauthorizedUser(firebaseUser) {
+  if (!firebaseUser || isEmailAllowed(firebaseUser.email)) {
+    return { ok: true }
+  }
+  if (auth) await firebaseSignOut(auth)
+  return { ok: false, error: 'This Google account is not authorized for KEM.' }
+}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -20,43 +54,58 @@ export function AuthProvider({ children }) {
       return undefined
     }
 
-    const timeout = window.setTimeout(() => setLoading(false), 5000)
+    let active = true
+    const timeout = window.setTimeout(() => {
+      if (active) setLoading(false)
+    }, 8000)
+
+    const finishRedirectSignIn = async () => {
+      try {
+        const result = await getRedirectResult(auth)
+        if (!active || !result?.user) return
+
+        const check = await rejectUnauthorizedUser(result.user)
+        if (!check.ok) {
+          setUser(null)
+          setError(check.error)
+          return
+        }
+
+        await persistUserProfile(result.user)
+        setUser(result.user)
+        setError(null)
+      } catch (err) {
+        if (!active) return
+        if (err?.code === 'auth/popup-closed-by-user') return
+        console.error('Redirect sign-in error:', err)
+        setError(friendlyAuthError(err))
+      }
+    }
+
+    finishRedirectSignIn()
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!active) return
       window.clearTimeout(timeout)
-      setError(null)
 
-      if (firebaseUser && !isEmailAllowed(firebaseUser.email)) {
-        await firebaseSignOut(auth)
-        setUser(null)
-        setError('This Google account is not authorized for KEM.')
-        setLoading(false)
-        return
-      }
-
-      if (firebaseUser && db) {
-        try {
-          await setDoc(
-            doc(db, 'users', firebaseUser.uid),
-            {
-              email: firebaseUser.email,
-              name: firebaseUser.displayName || '',
-              photoURL: firebaseUser.photoURL || '',
-              createdAt: serverTimestamp(),
-              lastLoginAt: serverTimestamp(),
-            },
-            { merge: true }
-          )
-        } catch {
-          // Non-blocking — auth still valid if Firestore write fails
+      if (firebaseUser) {
+        const check = await rejectUnauthorizedUser(firebaseUser)
+        if (!check.ok) {
+          setUser(null)
+          setError(check.error)
+          setLoading(false)
+          return
         }
+        await persistUserProfile(firebaseUser)
       }
 
       setUser(firebaseUser)
+      setError(null)
       setLoading(false)
     })
 
     return () => {
+      active = false
       window.clearTimeout(timeout)
       unsubscribe()
     }
@@ -69,12 +118,34 @@ export function AuthProvider({ children }) {
     }
 
     setError(null)
+
+    const redirectSignIn = async () => {
+      await signInWithRedirect(auth, googleProvider)
+    }
+
     try {
+      if (prefersRedirectSignIn()) {
+        await redirectSignIn()
+        return
+      }
+
       await signInWithPopup(auth, googleProvider)
     } catch (err) {
       if (err?.code === 'auth/popup-closed-by-user') return
+
+      if (shouldRetryWithRedirect(err)) {
+        try {
+          await redirectSignIn()
+          return
+        } catch (redirectErr) {
+          console.error('Redirect fallback error:', redirectErr)
+          setError(friendlyAuthError(redirectErr))
+          return
+        }
+      }
+
       console.error('Sign-in error:', err)
-      setError('Sign-in failed. Please try again.')
+      setError(friendlyAuthError(err))
     }
   }
 

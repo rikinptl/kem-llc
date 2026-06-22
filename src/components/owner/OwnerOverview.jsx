@@ -7,7 +7,6 @@ import {
   Target,
   TrendingUp,
   Users,
-  Zap,
 } from 'lucide-react'
 import { StatCard, Panel } from './OwnerUi'
 
@@ -68,10 +67,10 @@ export default function OwnerOverview({ data }) {
           accent="text-emerald-600"
         />
         <StatCard
-          icon={Zap}
-          label="Copy generated"
-          value={stats.copyDone}
-          hint={`${stats.copyPending} pending · ${stats.readyToDeploy} ready to deploy`}
+          icon={Target}
+          label="Scraped"
+          value={stats.scraped}
+          hint={`${stats.scrapedPending} pending scrape · ${stats.readyToDeploy} ready to deploy`}
           accent="text-kem-accent"
         />
         <StatCard
@@ -82,28 +81,27 @@ export default function OwnerOverview({ data }) {
           accent={runSummary.successRate >= 70 ? 'text-emerald-600' : 'text-amber-600'}
         />
         <StatCard icon={Layers} label="Market combos" value={marketsTotal} hint="Niche × city targets configured" />
-        <StatCard icon={Target} label="Scraped" value={stats.scraped} hint="Marked Done in sheet" />
         <StatCard
           icon={Rocket}
           label="Awaiting deploy"
           value={stats.readyToDeploy}
-          hint="Copy done, no live URL yet"
+          hint="Scraped, no live URL yet"
           accent="text-amber-600"
         />
         <StatCard
           icon={BarChart3}
           label="Funnel gap"
-          value={Math.max(0, stats.copyDone - stats.liveSites)}
-          hint="Generated but not yet live"
+          value={Math.max(0, stats.scraped - stats.liveSites)}
+          hint="Scraped but not yet live"
         />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Panel title="Lead funnel" subtitle="Scrape → DeepSeek copy → kem-llc Pages deploy" className="lg:col-span-1">
+        <Panel title="Lead funnel" subtitle="Scrape → pipeline deploy → kem-llc Pages" className="lg:col-span-1">
           <div className="space-y-4">
             <FunnelBar label="In inventory" value={stats.total} max={stats.total || 1} colorClass="bg-slate-400" />
             <FunnelBar label="Scraped" value={stats.scraped} max={stats.total || 1} colorClass="bg-violet-500" />
-            <FunnelBar label="Copy generated" value={stats.copyDone} max={stats.total || 1} colorClass="bg-amber-500" />
+            <FunnelBar label="Ready to deploy" value={stats.readyToDeploy} max={stats.total || 1} colorClass="bg-amber-500" />
             <FunnelBar label="Live on kem-llc" value={stats.liveSites} max={stats.total || 1} colorClass="bg-emerald-500" />
           </div>
         </Panel>

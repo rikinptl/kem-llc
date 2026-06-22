@@ -224,7 +224,7 @@ export default function OwnerDashboard() {
             </span>
             <span className="inline-flex items-center gap-1">
               <ExternalLink className="w-3 h-3" />
-              Sheet columns A–O synced · Address (E) now included
+              Sheet synced by column headers · DeepSeek Copy Status no longer used
             </span>
           </footer>
         )}

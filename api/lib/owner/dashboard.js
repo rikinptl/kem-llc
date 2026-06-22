@@ -17,15 +17,14 @@ function hasLiveUrl(url) {
 }
 
 function computeStats(leads) {
-  const copyDone = leads.filter((l) => isDone(l.copyStatus)).length
+  const scraped = leads.filter((l) => isDone(l.scrapedStatus)).length
   const liveSites = leads.filter((l) => hasLiveUrl(l.liveUrl)).length
   return {
     total: leads.length,
-    scraped: leads.filter((l) => isDone(l.scrapedStatus)).length,
-    copyDone,
-    copyPending: leads.length - copyDone,
+    scraped,
+    scrapedPending: leads.length - scraped,
     liveSites,
-    readyToDeploy: leads.filter((l) => isDone(l.copyStatus) && !hasLiveUrl(l.liveUrl)).length,
+    readyToDeploy: leads.filter((l) => isDone(l.scrapedStatus) && !hasLiveUrl(l.liveUrl)).length,
   }
 }
 
@@ -121,7 +120,7 @@ export async function getDashboardData() {
 
   const repo = process.env.OWNER_GITHUB_REPO || process.env.GITHUB_REPO || 'rikinptl/web-auto'
   const deployOrg = process.env.DEPLOY_ORG || 'kem-llc'
-  const aiCost = await buildAiCostStats(stats.copyDone)
+  const aiCost = await buildAiCostStats(stats.liveSites)
 
   const reached = (l) => Boolean(l.reachedOut?.trim()) && l.reachedOut.trim().toUpperCase() !== 'N'
   const outreach = {
