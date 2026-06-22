@@ -33,8 +33,33 @@ fi
 
 OWNER_BLOCK="
 # ── Owner dashboard (server-side — Vercel + local vercel dev) ───────────────
-OWNER_EMAILS=kem.sales.us@gmail.com,rikinpatel03@gmail.com
-VITE_OWNER_EMAILS=kem.sales.us@gmail.com,rikinpatel03@gmail.com
+"
+
+OWNER_EMAILS_CSV="kem.sales.us@gmail.com,rikinpatel03@gmail.com"
+COLLEAGUE_EMAILS_CSV=""
+VITE_OWNER_EMAILS_CSV="$OWNER_EMAILS_CSV"
+VITE_COLLEAGUE_EMAILS_CSV=""
+VITE_ALLOWED_EMAILS_CSV="$OWNER_EMAILS_CSV"
+
+if [[ -f "$ROOT/.env.local" ]]; then
+  existing_owner="$(grep -E '^OWNER_EMAILS=' "$ROOT/.env.local" | head -1 | cut -d= -f2- || true)"
+  existing_colleague="$(grep -E '^COLLEAGUE_EMAILS=' "$ROOT/.env.local" | head -1 | cut -d= -f2- || true)"
+  existing_vite_owner="$(grep -E '^VITE_OWNER_EMAILS=' "$ROOT/.env.local" | head -1 | cut -d= -f2- || true)"
+  existing_vite_colleague="$(grep -E '^VITE_COLLEAGUE_EMAILS=' "$ROOT/.env.local" | head -1 | cut -d= -f2- || true)"
+  existing_vite_allowed="$(grep -E '^VITE_ALLOWED_EMAILS=' "$ROOT/.env.local" | head -1 | cut -d= -f2- || true)"
+  [[ -n "$existing_owner" ]] && OWNER_EMAILS_CSV="$existing_owner"
+  [[ -n "$existing_colleague" ]] && COLLEAGUE_EMAILS_CSV="$existing_colleague"
+  [[ -n "$existing_vite_owner" ]] && VITE_OWNER_EMAILS_CSV="$existing_vite_owner"
+  [[ -n "$existing_vite_colleague" ]] && VITE_COLLEAGUE_EMAILS_CSV="$existing_vite_colleague"
+  [[ -n "$existing_vite_allowed" ]] && VITE_ALLOWED_EMAILS_CSV="$existing_vite_allowed"
+fi
+
+OWNER_BLOCK+="
+OWNER_EMAILS=${OWNER_EMAILS_CSV}
+COLLEAGUE_EMAILS=${COLLEAGUE_EMAILS_CSV}
+VITE_OWNER_EMAILS=${VITE_OWNER_EMAILS_CSV}
+VITE_COLLEAGUE_EMAILS=${VITE_COLLEAGUE_EMAILS_CSV}
+VITE_ALLOWED_EMAILS=${VITE_ALLOWED_EMAILS_CSV}
 FIREBASE_API_KEY=${EXISTING_FIREBASE_API_KEY}
 GOOGLE_SERVICE_ACCOUNT_JSON=${SA_JSON}
 GOOGLE_SHEETS_SPREADSHEET_ID=${GOOGLE_SHEETS_SPREADSHEET_ID}
@@ -54,7 +79,10 @@ if [[ -f "$ROOT/.env.local" ]]; then
     grep -v '^OWNER_GITHUB_TOKEN=' | \
     grep -v '^DEEPSEEK_API_KEY=' | \
     grep -v '^OWNER_EMAILS=' | \
+    grep -v '^COLLEAGUE_EMAILS=' | \
     grep -v '^VITE_OWNER_EMAILS=' | \
+    grep -v '^VITE_COLLEAGUE_EMAILS=' | \
+    grep -v '^VITE_ALLOWED_EMAILS=' | \
     grep -v '^FIREBASE_API_KEY=' | \
     grep -v '^GOOGLE_SHEETS_' | \
     grep -v '^OWNER_GITHUB_REPO=' | \
@@ -82,7 +110,8 @@ if command -v gh >/dev/null && gh auth status >/dev/null 2>&1; then
   gh secret set DEEPSEEK_API_KEY --body "$DEEPSEEK_API_KEY" --repo "$REPO"
   gh secret set OWNER_GITHUB_TOKEN --body "$GITHUB_TOKEN_VAL" --repo "$REPO"
   gh secret set OWNER_GITHUB_REPO --body "rikinptl/web-auto" --repo "$REPO"
-  gh secret set OWNER_EMAILS --body "kem.sales.us@gmail.com,rikinpatel03@gmail.com" --repo "$REPO"
+  gh secret set OWNER_EMAILS --body "$OWNER_EMAILS_CSV" --repo "$REPO"
+  gh secret set COLLEAGUE_EMAILS --body "$COLLEAGUE_EMAILS_CSV" --repo "$REPO"
   gh secret set DEPLOY_ORG --body "kem-llc" --repo "$REPO"
   echo "GitHub secrets updated."
 else

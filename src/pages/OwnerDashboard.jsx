@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import {
   ExternalLink,
   GitBranch,
@@ -17,11 +17,13 @@ import OwnerLiveSitesPanel from '../components/owner/OwnerLiveSitesPanel'
 import OwnerRunsTable from '../components/owner/OwnerRunsTable'
 import OwnerMarketGrid from '../components/owner/OwnerMarketGrid'
 import OwnerAiPanel from '../components/owner/OwnerAiPanel'
+import SalesQueuePanel from '../components/sales/SalesQueuePanel'
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
   { id: 'leads', label: 'Leads' },
   { id: 'sites', label: 'Live sites' },
+  { id: 'sales', label: 'Sales' },
   { id: 'runs', label: 'Runs' },
   { id: 'markets', label: 'Markets' },
   { id: 'ai', label: 'AI & budget' },
@@ -47,7 +49,9 @@ function HeaderLink({ href, children, primary = false }) {
 
 export default function OwnerDashboard() {
   const { user, signOut } = useAuth()
-  const [tab, setTab] = useState('overview')
+  const location = useLocation()
+  const [tab, setTab] = useState(location.state?.tab || 'overview')
+  const [salesToCall, setSalesToCall] = useState(null)
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -81,6 +85,27 @@ export default function OwnerDashboard() {
     () => (data?.leads ?? []).filter(isLive).length,
     [data]
   )
+
+  const handleSalesStats = useCallback((stats) => {
+    setSalesToCall(stats?.toCall ?? null)
+  }, [])
+
+  useEffect(() => {
+    async function loadSalesStats() {
+      if (!auth?.currentUser) return
+      try {
+        const token = await auth.currentUser.getIdToken()
+        const res = await fetch('/api/sales/queue?filter=to_call', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        const json = await res.json()
+        if (res.ok) setSalesToCall(json.stats?.toCall ?? null)
+      } catch {
+        /* badge is optional */
+      }
+    }
+    loadSalesStats()
+  }, [])
 
   return (
     <div className="min-h-screen bg-kem-stone">
@@ -140,9 +165,9 @@ export default function OwnerDashboard() {
                 <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                 {loading ? 'Refreshing…' : 'Refresh'}
               </button>
-              <Link to="/" className="inline-flex items-center rounded-full border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">
+              <a href="/" className="inline-flex items-center rounded-full border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50">
                 Site
-              </Link>
+              </a>
               <button type="button" onClick={signOut} className="landing-pill-primary !text-xs !px-4 !py-2">
                 Sign out
               </button>
@@ -166,6 +191,11 @@ export default function OwnerDashboard() {
               {t.id === 'sites' && liveCount > 0 && (
                 <span className="ml-1.5 rounded-full bg-emerald-100 text-emerald-700 px-1.5 py-0.5 text-[10px]">
                   {liveCount}
+                </span>
+              )}
+              {t.id === 'sales' && salesToCall > 0 && (
+                <span className="ml-1.5 rounded-full bg-kem-accent/15 text-kem-accent px-1.5 py-0.5 text-[10px]">
+                  {salesToCall}
                 </span>
               )}
             </button>
@@ -206,11 +236,12 @@ export default function OwnerDashboard() {
         {data && tab === 'sites' && (
           <OwnerLiveSitesPanel leads={data.leads} aiCost={data.aiCost} kemOrg={data.links.kemOrg} />
         )}
+        {tab === 'sales' && <SalesQueuePanel embedded onStatsChange={handleSalesStats} />}
         {data && tab === 'runs' && <OwnerRunsTable runs={data.runs} />}
         {data && tab === 'markets' && <OwnerMarketGrid coverage={data.coverage} />}
         {data && tab === 'ai' && <OwnerAiPanel aiCost={data.aiCost} stats={data.stats} />}
 
-        {data && (
+        {data && tab !== 'sales' && (
           <footer className="mt-12 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
             <span>
               web-auto monitor ·{' '}

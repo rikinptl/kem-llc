@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
-import { isOwnerEmail } from '../lib/roles'
+import { getLoginDestination } from '../lib/roles'
 import { DARK_SECTION } from '../lib/theme'
 
 export default function Login() {
@@ -19,7 +19,7 @@ export default function Login() {
   }
 
   if (user) {
-    const dest = isOwnerEmail(user.email) ? '/portal/owner' : from
+    const dest = getLoginDestination(user.email)
     return <Navigate to={dest} replace />
   }
 

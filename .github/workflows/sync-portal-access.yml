@@ -1,0 +1,43 @@
+name: Sync portal access
+
+# Resync portal access env vars on Vercel from current production values and redeploy.
+# Manual dispatch only. Access lists are not stored in git.
+#
+# Who can run: PORTAL_WORKFLOW_ACTORS repo variable (default: rikinptl).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  secrets: write
+
+concurrency:
+  group: portal-access-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enforce workflow runner allowlist
+        env:
+          PORTAL_WORKFLOW_ACTORS: ${{ vars.PORTAL_WORKFLOW_ACTORS }}
+        run: bash .github/scripts/assert-workflow-actor.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install GitHub CLI
+        run: sudo apt-get update && sudo apt-get install -y gh
+
+      - name: Sync Vercel env + redeploy production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/sync-portal-access.mjs

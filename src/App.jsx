@@ -12,6 +12,7 @@ import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Portal from './pages/Portal'
 import OwnerDashboardRoute from './pages/OwnerDashboardRoute'
+import SalesDashboardRoute from './pages/SalesDashboardRoute'
 
 function App() {
   return (
@@ -22,6 +23,14 @@ function App() {
           element={
             <AuthProvider>
               <Login />
+            </AuthProvider>
+          }
+        />
+        <Route
+          path="/portal/sales"
+          element={
+            <AuthProvider>
+              <SalesDashboardRoute />
             </AuthProvider>
           }
         />

@@ -1,0 +1,101 @@
+name: Onboard portal user
+
+# Add or remove an owner/colleague by email. Reads/writes Vercel env vars and redeploys.
+# Access lists are NOT stored in git — only in Vercel (and GitHub Secrets as backup).
+#
+# Who can run: PORTAL_WORKFLOW_ACTORS repo variable (default: rikinptl).
+#
+# Required repo secrets:
+#   VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+# Run locally: ./scripts/setup-portal-onboarding-secrets.sh
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: Google account email (must match Firebase sign-in)
+        required: true
+        type: string
+      role:
+        description: Portal role
+        required: true
+        type: choice
+        options:
+          - owner
+          - colleague
+      action:
+        description: Grant or revoke access
+        required: true
+        type: choice
+        default: add
+        options:
+          - add
+          - remove
+
+permissions:
+  contents: read
+  actions: read
+  secrets: write
+
+concurrency:
+  group: portal-onboard
+  cancel-in-progress: false
+
+jobs:
+  onboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enforce workflow runner allowlist
+        env:
+          PORTAL_WORKFLOW_ACTORS: ${{ vars.PORTAL_WORKFLOW_ACTORS }}
+        run: bash .github/scripts/assert-workflow-actor.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install GitHub CLI
+        run: sudo apt-get update && sudo apt-get install -y gh
+
+      - name: Update portal access on Vercel
+        id: update
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/portal-access.mjs "${{ inputs.action }}" \
+            --email "${{ inputs.email }}" \
+            --role "${{ inputs.role }}" \
+            --redact
+
+      - name: Summary
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          {
+            echo "### Portal access updated"
+            echo ""
+            echo "- **Action:** ${{ inputs.action }}"
+            echo "- **Role:** ${{ inputs.role }}"
+            echo "- **Email:** (updated on Vercel — not logged here)"
+            echo ""
+            echo "**Counts after change:**"
+            echo '```json'
+            node scripts/portal-access.mjs export-env --redact
+            echo '```'
+            echo ""
+            echo "Production redeploy ran so kemtrade.us picks up new VITE_* allowlists."
+            echo ""
+            echo "**After onboarding:** user signs in at kemtrade.us/login with this Google account."
+            if [ "${{ inputs.role }}" = "owner" ]; then
+              echo "- Owner → /portal/owner"
+            else
+              echo "- Colleague → /portal/sales"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

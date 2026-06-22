@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { isOwnerEmail } from '../lib/roles'
+import { isOwnerEmail, isColleagueEmail } from '../lib/roles'
 import PageHeader from '../components/PageHeader'
 
 export default function Portal() {
@@ -18,6 +18,10 @@ export default function Portal() {
 
   if (user && isOwnerEmail(user.email)) {
     return <Navigate to="/portal/owner" replace />
+  }
+
+  if (user && isColleagueEmail(user.email)) {
+    return <Navigate to="/portal/sales" replace />
   }
 
   return (

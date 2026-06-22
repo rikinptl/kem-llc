@@ -32,3 +32,6 @@ server/.env
 # Local Astro sandbox (Jetstream fork; large). Omit from git unless you intentionally version it.
 kem-astro/
 .vercel
+
+# Portal access lists (live data in Vercel env — never commit real emails)
+config/portal-access.json
