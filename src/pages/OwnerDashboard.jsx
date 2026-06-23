@@ -65,7 +65,13 @@ export default function OwnerDashboard() {
       const res = await fetch('/api/owner/dashboard', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      const json = await res.json()
+      const text = await res.text()
+      let json
+      try {
+        json = text ? JSON.parse(text) : {}
+      } catch {
+        throw new Error('Dashboard API returned an invalid response. Try again in a moment.')
+      }
       if (!res.ok) throw new Error(json.error || 'Failed to load dashboard')
       setData(json)
     } catch (e) {
