@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import {
+  getRedirectResult,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithRedirect,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -28,6 +30,11 @@ export function AuthProvider({ children }) {
     }
 
     const timeout = window.setTimeout(() => setLoading(false), 5000)
+
+    getRedirectResult(auth).catch((err) => {
+      if (err?.code === 'auth/no-auth-event') return
+      console.warn('Redirect sign-in result:', err)
+    })
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       window.clearTimeout(timeout)
@@ -80,6 +87,23 @@ export function AuthProvider({ children }) {
       await signInWithPopup(auth, googleProvider)
     } catch (err) {
       if (err?.code === 'auth/popup-closed-by-user') return
+
+      const useRedirect =
+        err?.code === 'auth/internal-error' ||
+        err?.code === 'auth/popup-blocked' ||
+        err?.code === 'auth/operation-not-supported-in-this-environment'
+
+      if (useRedirect) {
+        try {
+          await signInWithRedirect(auth, googleProvider)
+          return
+        } catch (redirectErr) {
+          console.error('Redirect sign-in error:', redirectErr)
+          setError(friendlyAuthError(redirectErr))
+          return
+        }
+      }
+
       console.error('Sign-in error:', err)
       setError(friendlyAuthError(err))
     }

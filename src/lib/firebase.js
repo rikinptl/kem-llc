@@ -4,9 +4,23 @@ import { getFirestore } from 'firebase/firestore'
 
 const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || 'kem-llc-web'
 
+function resolveAuthDomain() {
+  const fromEnv = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN?.trim()
+  if (fromEnv) return fromEnv
+
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname
+    if (host === 'kemtrade.us' || host === 'www.kemtrade.us') {
+      return 'kemtrade.us'
+    }
+  }
+
+  return `${projectId}.firebaseapp.com`
+}
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || `${projectId}.firebaseapp.com`,
+  authDomain: resolveAuthDomain(),
   projectId,
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
