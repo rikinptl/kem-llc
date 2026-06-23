@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { getLoginDestination } from '../lib/roles'
+import { isPortalLoginHost, redirectToPortalLogin } from '../lib/authSignIn'
 import { DARK_SECTION } from '../lib/theme'
 
 export default function Login() {
   const { user, loading, error, signInWithGoogle, isConfigured } = useAuth()
   const location = useLocation()
   const from = location.state?.from || '/portal'
+
+  useEffect(() => {
+    if (!isPortalLoginHost(window.location.hostname)) {
+      redirectToPortalLogin()
+    }
+  }, [])
 
   if (loading) {
     return (
