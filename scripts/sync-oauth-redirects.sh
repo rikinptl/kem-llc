@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Sync kemtrade.us OAuth redirect URIs via Firebase auth deploy (updates GCP OAuth client).
+# Sync kemtrade.us OAuth settings via Firebase (Option 3 from Firebase redirect best practices).
+# Registers kemtrade.us with the GCP OAuth client used by Google sign-in.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -7,7 +8,6 @@ cd "$ROOT"
 
 PROJECT_ID="${GCP_PROJECT_ID:-kem-llc-web}"
 
-echo "==> Syncing Google OAuth redirect URIs for ${PROJECT_ID}..."
-echo "    Domains: kemtrade.us, www.kemtrade.us, firebaseapp.com, localhost"
+echo "==> Syncing Google OAuth for ${PROJECT_ID} (kemtrade.us custom auth domain)..."
 firebase deploy --only auth --project "$PROJECT_ID"
-echo "✓ Done. Retry Google sign-in at https://kemtrade.us/login"
+echo "✓ OAuth client updated. authDomain must be kemtrade.us with /__/auth proxied on Vercel."

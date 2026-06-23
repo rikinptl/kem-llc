@@ -1,5 +1,5 @@
-/** Redirect sign-in on production — reliable with firebaseapp.com authDomain + kemtrade.us hosting. */
-export function prefersRedirectSignIn() {
+/** Production uses redirect (required for kemtrade.us + custom authDomain per Firebase docs). */
+export function useRedirectSignIn() {
   if (typeof window === 'undefined') return false
   const host = window.location.hostname
   return host !== 'localhost' && host !== '127.0.0.1'
@@ -19,11 +19,9 @@ export function friendlyAuthError(err) {
   const code = err?.code || ''
   switch (code) {
     case 'auth/unauthorized-domain':
-      return 'Sign-in is not enabled for this domain. Contact support.'
+      return 'Sign-in is not enabled for kemtrade.us. Contact support.'
     case 'auth/network-request-failed':
       return 'Network error. Check your connection and try again.'
-    case 'auth/too-many-requests':
-      return 'Too many attempts. Please wait a minute and try again.'
     case 'auth/web-storage-unsupported':
       return 'Sign-in requires browser storage. Disable private mode for kemtrade.us.'
     case 'auth/invalid-credential':

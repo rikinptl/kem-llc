@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 import {
   getRedirectResult,
   onAuthStateChanged,
+  signInWithPopup,
   signInWithRedirect,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
@@ -13,7 +14,7 @@ import {
   isEmailAllowed,
   isFirebaseConfigured,
 } from '../lib/firebase'
-import { friendlyAuthError, isIgnorableRedirectError } from '../lib/authSignIn'
+import { friendlyAuthError, isIgnorableRedirectError, useRedirectSignIn } from '../lib/authSignIn'
 
 const AuthContext = createContext(null)
 
@@ -59,6 +60,7 @@ export function AuthProvider({ children }) {
     let unsubscribe = () => {}
 
     async function boot() {
+      // Complete redirect sign-in when returning from Google (must run before auth listener).
       try {
         const result = await getRedirectResult(auth)
         if (!active) return
@@ -120,17 +122,20 @@ export function AuthProvider({ children }) {
 
     setError(null)
 
-    const host = window.location.hostname
-    const useRedirect = host !== 'localhost' && host !== '127.0.0.1'
-
     try {
-      if (useRedirect) {
+      if (useRedirectSignIn()) {
         await signInWithRedirect(auth, googleProvider)
         return
       }
 
-      const { signInWithPopup } = await import('firebase/auth')
-      await signInWithPopup(auth, googleProvider)
+      const result = await signInWithPopup(auth, googleProvider)
+      const check = await rejectUnauthorizedUser(result.user)
+      if (!check.ok) {
+        setError(check.error)
+        return
+      }
+      await persistUserProfile(result.user)
+      setUser(result.user)
     } catch (err) {
       if (isIgnorableRedirectError(err) || err?.code === 'auth/popup-closed-by-user') return
       console.error('Sign-in error:', err)
