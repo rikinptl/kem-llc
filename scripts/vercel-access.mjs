@@ -4,7 +4,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { execSync, spawnSync } from 'child_process'
+import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -76,27 +76,56 @@ export function linkVercelProject(rootDir = ROOT) {
   fs.writeFileSync(path.join(dir, 'project.json'), `${JSON.stringify({ orgId, projectId })}\n`)
 }
 
+function envTypeForKey(key) {
+  return key.startsWith('VITE_') ? 'plain' : 'encrypted'
+}
+
+function teamQuery(orgId) {
+  return orgId ? `?teamId=${encodeURIComponent(orgId)}` : ''
+}
+
+async function deleteVercelEnvEntry({ token, orgId, projectId, id }) {
+  const res = await fetch(
+    `https://api.vercel.com/v9/projects/${projectId}/env/${id}${teamQuery(orgId)}`,
+    {
+      method: 'DELETE',
+      headers: vercelHeaders(token),
+    }
+  )
+  if (!res.ok && res.status !== 404) {
+    throw new Error(`DELETE env/${id} failed (${res.status}): ${await res.text()}`)
+  }
+}
+
+async function upsertVercelEnvEntry({ token, orgId, projectId, key, value, target, envs }) {
+  const matches = envs.filter((entry) => entry.key === key && entry.target?.includes(target))
+  for (const entry of matches) {
+    await deleteVercelEnvEntry({ token, orgId, projectId, id: entry.id })
+  }
+
+  const type = envTypeForKey(key)
+  const res = await fetch(`https://api.vercel.com/v10/projects/${projectId}/env${teamQuery(orgId)}`, {
+    method: 'POST',
+    headers: { ...vercelHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, value, type, target: [target] }),
+  })
+  if (!res.ok) {
+    throw new Error(`POST ${key}/${target} failed (${res.status}): ${await res.text()}`)
+  }
+  return res.json()
+}
+
 export async function writeVercelAccessEnv(envValues, rootDir = ROOT) {
   linkVercelProject(rootDir)
   const token = requireEnv('VERCEL_TOKEN')
+  const orgId = requireEnv('VERCEL_ORG_ID')
+  const projectId = requireEnv('VERCEL_PROJECT_ID')
+  const envs = await fetchVercelProjectEnv({ token, orgId, projectId })
 
   for (const key of ACCESS_ENV_KEYS) {
     const value = envValues[key] ?? ''
     for (const target of TARGETS) {
-      const result = spawnSync(
-        'npx',
-        ['--yes', 'vercel@latest', 'env', 'add', key, target, '--force', '--yes', '--token', token],
-        {
-          cwd: rootDir,
-          input: value || ' ',
-          stdio: ['pipe', 'pipe', 'pipe'],
-          encoding: 'utf8',
-          env: process.env,
-        }
-      )
-      if (result.status !== 0) {
-        throw new Error((result.stderr || result.stdout || `vercel env add ${key} failed`).trim())
-      }
+      await upsertVercelEnvEntry({ token, orgId, projectId, key, value, target, envs })
     }
     console.log(`  vercel ok ${key}`)
   }
