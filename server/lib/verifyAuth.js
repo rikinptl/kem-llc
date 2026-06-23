@@ -10,16 +10,17 @@ function parseEmailList(raw) {
 
 export function getOwnerEmailsServer() {
   const raw =
-    process.env.OWNER_EMAILS ||
-    (process.env.NODE_ENV !== 'production' ? process.env.VITE_OWNER_EMAILS : '') ||
-    (process.env.NODE_ENV !== 'production' ? DEV_DEFAULT_OWNERS : '')
+    process.env.OWNER_EMAILS?.trim() ||
+    process.env.VITE_OWNER_EMAILS?.trim() ||
+    DEV_DEFAULT_OWNERS
   return parseEmailList(raw)
 }
 
 export function getColleagueEmailsServer() {
   const raw =
-    process.env.COLLEAGUE_EMAILS ||
-    (process.env.NODE_ENV !== 'production' ? process.env.VITE_COLLEAGUE_EMAILS : '')
+    process.env.COLLEAGUE_EMAILS?.trim() ||
+    process.env.VITE_COLLEAGUE_EMAILS?.trim() ||
+    ''
   return parseEmailList(raw)
 }
 
