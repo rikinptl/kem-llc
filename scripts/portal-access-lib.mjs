@@ -5,6 +5,9 @@ import { fileURLToPath } from 'url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const LOCAL_ENV_PATH = path.join(ROOT, '.env.local')
 
+/** Never start onboarding from an empty owner list — avoids wiping production access. */
+export const BOOTSTRAP_OWNERS = ['kem.sales.us@gmail.com', 'rikinpatel03@gmail.com']
+
 export function normalizeEmail(email) {
   return String(email || '').trim().toLowerCase()
 }
@@ -25,8 +28,11 @@ function uniqueSorted(list) {
 }
 
 export function loadConfigFromEnvMap(map) {
-  const owners = parseEmailCsv(map.VITE_OWNER_EMAILS || map.OWNER_EMAILS)
+  let owners = parseEmailCsv(map.VITE_OWNER_EMAILS || map.OWNER_EMAILS)
   const colleagues = parseEmailCsv(map.VITE_COLLEAGUE_EMAILS || map.COLLEAGUE_EMAILS)
+  if (owners.length === 0) {
+    owners = [...BOOTSTRAP_OWNERS]
+  }
   return { owners: uniqueSorted(owners), colleagues: uniqueSorted(colleagues) }
 }
 

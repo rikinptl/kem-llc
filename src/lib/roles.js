@@ -8,8 +8,9 @@ function parseList(raw) {
 }
 
 export function getOwnerEmails() {
-  const raw = import.meta.env.VITE_OWNER_EMAILS || import.meta.env.VITE_ALLOWED_EMAILS || DEFAULT_OWNERS
-  return parseList(raw)
+  const raw = import.meta.env.VITE_OWNER_EMAILS?.trim()
+  if (raw) return parseList(raw)
+  return parseList(DEFAULT_OWNERS)
 }
 
 export function getColleagueEmails() {
@@ -42,9 +43,6 @@ export function getLoginDestination(email) {
 
 export function isAllowedEmail(email) {
   if (!email) return false
-  const allowed = import.meta.env.VITE_ALLOWED_EMAILS || DEFAULT_OWNERS
-  const colleagues = import.meta.env.VITE_COLLEAGUE_EMAILS || ''
-  const list = [...new Set([...parseList(allowed), ...parseList(colleagues)])]
-  if (list.length === 0) return true
+  const list = [...new Set([...getOwnerEmails(), ...getColleagueEmails()])]
   return list.includes(email.toLowerCase())
 }
