@@ -16,6 +16,24 @@ export function redirectToPortalLogin() {
   window.location.replace(`${PORTAL_ORIGIN}${loginPath}`)
 }
 
+/** Only call getRedirectResult after an actual Firebase redirect round-trip. */
+export function shouldHandleRedirectResult() {
+  if (typeof window === 'undefined') return false
+
+  try {
+    const pending = Object.keys(sessionStorage).some((key) => key.includes('firebase:pendingRedirect'))
+    if (pending) return true
+  } catch {
+    // ignore storage errors
+  }
+
+  const params = new URLSearchParams(window.location.search)
+  if (params.has('apiKey')) return true
+  if (window.location.hash.includes('apiKey')) return true
+
+  return false
+}
+
 export function friendlyAuthError(err) {
   const code = err?.code || ''
   switch (code) {

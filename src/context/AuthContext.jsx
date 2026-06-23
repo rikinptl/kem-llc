@@ -13,7 +13,7 @@ import {
   isEmailAllowed,
   isFirebaseConfigured,
 } from '../lib/firebase'
-import { friendlyAuthError } from '../lib/authSignIn'
+import { friendlyAuthError, shouldHandleRedirectResult } from '../lib/authSignIn'
 import { signInWithGoogleCredential } from '../lib/googleSignIn'
 
 const AuthContext = createContext(null)
@@ -52,18 +52,22 @@ export function AuthProvider({ children }) {
     let active = true
     let redirectHandled = false
 
-    const redirectResultPromise = getRedirectResult(auth)
-      .then((result) => {
-        redirectHandled = true
-        return result
-      })
-      .catch((err) => {
-        redirectHandled = true
-        if (err?.code === 'auth/no-auth-event') return null
-        console.error('Redirect sign-in failed:', err)
-        if (active) setError(friendlyAuthError(err))
-        return null
-      })
+    const redirectResultPromise = shouldHandleRedirectResult()
+      ? getRedirectResult(auth)
+          .then((result) => {
+            redirectHandled = true
+            return result
+          })
+          .catch((err) => {
+            redirectHandled = true
+            if (err?.code === 'auth/no-auth-event') return null
+            console.error('Redirect sign-in failed:', err)
+            if (active) setError(friendlyAuthError(err))
+            return null
+          })
+      : Promise.resolve(null).finally(() => {
+          redirectHandled = true
+        })
 
     const timeout = window.setTimeout(() => {
       if (active) setLoading(false)
@@ -77,7 +81,7 @@ export function AuthProvider({ children }) {
       window.clearTimeout(timeout)
       setError(null)
 
-      if (firebaseUser && !isEmailAllowed(firebaseUser.email)) {
+      if (firebaseUser?.email && !isEmailAllowed(firebaseUser.email)) {
         await firebaseSignOut(auth)
         setUser(null)
         setError('This Google account is not authorized for KEM.')
