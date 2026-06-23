@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import {
-  getRedirectResult,
   onAuthStateChanged,
   signInWithPopup,
-  signInWithRedirect,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -14,36 +12,9 @@ import {
   isEmailAllowed,
   isFirebaseConfigured,
 } from '../lib/firebase'
-import { friendlyAuthError, isIgnorableRedirectError, useRedirectSignIn } from '../lib/authSignIn'
+import { friendlyAuthError } from '../lib/authSignIn'
 
 const AuthContext = createContext(null)
-
-async function persistUserProfile(firebaseUser) {
-  if (!firebaseUser || !db) return
-  try {
-    await setDoc(
-      doc(db, 'users', firebaseUser.uid),
-      {
-        email: firebaseUser.email,
-        name: firebaseUser.displayName || '',
-        photoURL: firebaseUser.photoURL || '',
-        createdAt: serverTimestamp(),
-        lastLoginAt: serverTimestamp(),
-      },
-      { merge: true }
-    )
-  } catch {
-    // Non-blocking
-  }
-}
-
-async function rejectUnauthorizedUser(firebaseUser) {
-  if (!firebaseUser || isEmailAllowed(firebaseUser.email)) {
-    return { ok: true }
-  }
-  if (auth) await firebaseSignOut(auth)
-  return { ok: false, error: 'This Google account is not authorized for KEM.' }
-}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -56,60 +27,44 @@ export function AuthProvider({ children }) {
       return undefined
     }
 
-    let active = true
-    let unsubscribe = () => {}
+    const timeout = window.setTimeout(() => setLoading(false), 5000)
 
-    async function boot() {
-      // Complete redirect sign-in when returning from Google (must run before auth listener).
-      try {
-        const result = await getRedirectResult(auth)
-        if (!active) return
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      window.clearTimeout(timeout)
+      setError(null)
 
-        if (result?.user) {
-          const check = await rejectUnauthorizedUser(result.user)
-          if (!check.ok) {
-            setError(check.error)
-            setUser(null)
-          } else {
-            await persistUserProfile(result.user)
-            setUser(result.user)
-            setError(null)
-          }
-        }
-      } catch (err) {
-        if (active && !isIgnorableRedirectError(err)) {
-          console.error('Redirect sign-in error:', err)
-          setError(friendlyAuthError(err))
+      if (firebaseUser && !isEmailAllowed(firebaseUser.email)) {
+        await firebaseSignOut(auth)
+        setUser(null)
+        setError('This Google account is not authorized for KEM.')
+        setLoading(false)
+        return
+      }
+
+      if (firebaseUser && db) {
+        try {
+          await setDoc(
+            doc(db, 'users', firebaseUser.uid),
+            {
+              email: firebaseUser.email,
+              name: firebaseUser.displayName || '',
+              photoURL: firebaseUser.photoURL || '',
+              createdAt: serverTimestamp(),
+              lastLoginAt: serverTimestamp(),
+            },
+            { merge: true }
+          )
+        } catch {
+          // Non-blocking
         }
       }
 
-      if (!active) return
-
-      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-        if (!active) return
-
-        if (firebaseUser) {
-          const check = await rejectUnauthorizedUser(firebaseUser)
-          if (!check.ok) {
-            setUser(null)
-            setError(check.error)
-            setLoading(false)
-            return
-          }
-          await persistUserProfile(firebaseUser)
-          setUser(firebaseUser)
-          setError(null)
-        } else {
-          setUser(null)
-        }
-        setLoading(false)
-      })
-    }
-
-    boot()
+      setUser(firebaseUser)
+      setLoading(false)
+    })
 
     return () => {
-      active = false
+      window.clearTimeout(timeout)
       unsubscribe()
     }
   }, [])
@@ -121,23 +76,10 @@ export function AuthProvider({ children }) {
     }
 
     setError(null)
-
     try {
-      if (useRedirectSignIn()) {
-        await signInWithRedirect(auth, googleProvider)
-        return
-      }
-
-      const result = await signInWithPopup(auth, googleProvider)
-      const check = await rejectUnauthorizedUser(result.user)
-      if (!check.ok) {
-        setError(check.error)
-        return
-      }
-      await persistUserProfile(result.user)
-      setUser(result.user)
+      await signInWithPopup(auth, googleProvider)
     } catch (err) {
-      if (isIgnorableRedirectError(err) || err?.code === 'auth/popup-closed-by-user') return
+      if (err?.code === 'auth/popup-closed-by-user') return
       console.error('Sign-in error:', err)
       setError(friendlyAuthError(err))
     }
