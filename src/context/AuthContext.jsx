@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import {
   getRedirectResult,
   onAuthStateChanged,
@@ -13,11 +13,7 @@ import {
   isEmailAllowed,
   isFirebaseConfigured,
 } from '../lib/firebase'
-import {
-  friendlyAuthError,
-  isIgnorableRedirectError,
-  prefersRedirectSignIn,
-} from '../lib/authSignIn'
+import { friendlyAuthError, isIgnorableRedirectError } from '../lib/authSignIn'
 
 const AuthContext = createContext(null)
 
@@ -36,7 +32,7 @@ async function persistUserProfile(firebaseUser) {
       { merge: true }
     )
   } catch {
-    // Non-blocking — auth still valid if Firestore write fails
+    // Non-blocking
   }
 }
 
@@ -52,7 +48,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const redirectHandled = useRef(false)
 
   useEffect(() => {
     if (!isFirebaseConfigured || !auth) {
@@ -61,14 +56,9 @@ export function AuthProvider({ children }) {
     }
 
     let active = true
-    const timeout = window.setTimeout(() => {
-      if (active) setLoading(false)
-    }, 8000)
+    let unsubscribe = () => {}
 
-    const finishRedirectSignIn = async () => {
-      if (redirectHandled.current) return
-      redirectHandled.current = true
-
+    async function boot() {
       try {
         const result = await getRedirectResult(auth)
         if (!active) return
@@ -76,64 +66,65 @@ export function AuthProvider({ children }) {
         if (result?.user) {
           const check = await rejectUnauthorizedUser(result.user)
           if (!check.ok) {
-            setUser(null)
             setError(check.error)
-            return
+            setUser(null)
+          } else {
+            await persistUserProfile(result.user)
+            setUser(result.user)
+            setError(null)
           }
-
-          await persistUserProfile(result.user)
-          setUser(result.user)
-          setError(null)
         }
       } catch (err) {
-        if (!active || isIgnorableRedirectError(err)) return
-        console.error('Redirect sign-in error:', err)
-        setError(friendlyAuthError(err))
+        if (active && !isIgnorableRedirectError(err)) {
+          console.error('Redirect sign-in error:', err)
+          setError(friendlyAuthError(err))
+        }
       }
+
+      if (!active) return
+
+      unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        if (!active) return
+
+        if (firebaseUser) {
+          const check = await rejectUnauthorizedUser(firebaseUser)
+          if (!check.ok) {
+            setUser(null)
+            setError(check.error)
+            setLoading(false)
+            return
+          }
+          await persistUserProfile(firebaseUser)
+          setUser(firebaseUser)
+          setError(null)
+        } else {
+          setUser(null)
+        }
+        setLoading(false)
+      })
     }
 
-    finishRedirectSignIn()
-
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (!active) return
-      window.clearTimeout(timeout)
-
-      if (firebaseUser) {
-        const check = await rejectUnauthorizedUser(firebaseUser)
-        if (!check.ok) {
-          setUser(null)
-          setError(check.error)
-          setLoading(false)
-          return
-        }
-        await persistUserProfile(firebaseUser)
-        setUser(firebaseUser)
-        setError(null)
-        setLoading(false)
-        return
-      }
-
-      setUser(null)
-      setLoading(false)
-    })
+    boot()
 
     return () => {
       active = false
-      window.clearTimeout(timeout)
       unsubscribe()
     }
   }, [])
 
   const signInWithGoogle = async () => {
     if (!isFirebaseConfigured || !auth || !googleProvider) {
-      setError('Sign-in is not configured yet. Run scripts/setup-gcp-auth.sh first.')
+      setError('Sign-in is not configured yet.')
       return
     }
 
     setError(null)
 
+    const host = window.location.hostname
+    const useRedirect = host !== 'localhost' && host !== '127.0.0.1'
+
     try {
-      if (prefersRedirectSignIn()) {
+      if (useRedirect) {
         await signInWithRedirect(auth, googleProvider)
         return
       }

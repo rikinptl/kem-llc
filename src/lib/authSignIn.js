@@ -1,7 +1,6 @@
-/** Redirect sign-in on production — popups fail on kemtrade.us with custom auth proxy. */
+/** Redirect sign-in on production — reliable with firebaseapp.com authDomain + kemtrade.us hosting. */
 export function prefersRedirectSignIn() {
   if (typeof window === 'undefined') return false
-
   const host = window.location.hostname
   return host !== 'localhost' && host !== '127.0.0.1'
 }
@@ -25,18 +24,11 @@ export function friendlyAuthError(err) {
       return 'Network error. Check your connection and try again.'
     case 'auth/too-many-requests':
       return 'Too many attempts. Please wait a minute and try again.'
-    case 'auth/account-exists-with-different-credential':
-      return 'This email is linked to another sign-in method.'
     case 'auth/web-storage-unsupported':
-      return 'Sign-in requires browser storage. Disable private mode or allow cookies for kemtrade.us.'
+      return 'Sign-in requires browser storage. Disable private mode for kemtrade.us.'
     case 'auth/invalid-credential':
     case 'auth/user-disabled':
       return 'This Google account cannot sign in. Try another account or contact support.'
-    case 'auth/popup-blocked':
-    case 'auth/cancelled-popup-request':
-      return 'Pop-up was blocked. Allow pop-ups for kemtrade.us or try again.'
-    case 'auth/internal-error':
-      return 'Sign-in session failed. Clear site data for kemtrade.us and try again.'
     default:
       return code ? `Sign-in failed (${code}). Please try again.` : 'Sign-in failed. Please try again.'
   }
