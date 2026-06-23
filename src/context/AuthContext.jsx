@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import {
   getRedirectResult,
   onAuthStateChanged,
@@ -7,7 +7,14 @@ import {
   signOut as firebaseSignOut,
 } from 'firebase/auth'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
-import { auth, db, googleProvider, isEmailAllowed, isFirebaseConfigured } from '../lib/firebase'
+import {
+  auth,
+  browserPopupRedirectResolver,
+  db,
+  googleProvider,
+  isEmailAllowed,
+  isFirebaseConfigured,
+} from '../lib/firebase'
 import {
   friendlyAuthError,
   isIgnorableRedirectError,
@@ -48,6 +55,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const redirectHandled = useRef(false)
 
   useEffect(() => {
     if (!isFirebaseConfigured || !auth) {
@@ -61,8 +69,11 @@ export function AuthProvider({ children }) {
     }, 8000)
 
     const finishRedirectSignIn = async () => {
+      if (redirectHandled.current) return
+      redirectHandled.current = true
+
       try {
-        const result = await getRedirectResult(auth)
+        const result = await getRedirectResult(auth, browserPopupRedirectResolver)
         if (!active || !result?.user) return
 
         const check = await rejectUnauthorizedUser(result.user)
@@ -121,7 +132,7 @@ export function AuthProvider({ children }) {
     setError(null)
 
     const redirectSignIn = async () => {
-      await signInWithRedirect(auth, googleProvider)
+      await signInWithRedirect(auth, googleProvider, browserPopupRedirectResolver)
     }
 
     try {
@@ -140,6 +151,17 @@ export function AuthProvider({ children }) {
           return
         } catch (redirectErr) {
           console.error('Redirect fallback error:', redirectErr)
+          setError(friendlyAuthError(redirectErr))
+          return
+        }
+      }
+
+      if (err?.code === 'auth/internal-error') {
+        try {
+          await redirectSignIn()
+          return
+        } catch (redirectErr) {
+          console.error('Redirect fallback after internal-error:', redirectErr)
           setError(friendlyAuthError(redirectErr))
           return
         }

@@ -1,10 +1,15 @@
-/** Use redirect sign-in on production — popups break in many desktop browsers (third-party cookies). */
+/** Mobile uses redirect; desktop uses popup (more reliable with kemtrade.us auth proxy). */
 export function prefersRedirectSignIn() {
   if (typeof window === 'undefined') return false
 
   const host = window.location.hostname
   if (host === 'localhost' || host === '127.0.0.1') return false
-  return true
+
+  const ua = navigator.userAgent || ''
+  const isMobileUa = /Android|iPhone|iPad|iPod|Mobile|IEMobile|Opera Mini/i.test(ua)
+  const isIpadOs = navigator.maxTouchPoints > 1 && /MacIntel|Macintosh/i.test(navigator.platform || '')
+
+  return isMobileUa || isIpadOs
 }
 
 const IGNORABLE_REDIRECT_ERRORS = new Set([
@@ -35,7 +40,9 @@ export function friendlyAuthError(err) {
       return 'This Google account cannot sign in. Try another account or contact support.'
     case 'auth/popup-blocked':
     case 'auth/cancelled-popup-request':
-      return 'Pop-up was blocked. Redirecting to Google sign-in…'
+      return 'Pop-up was blocked. Trying redirect sign-in…'
+    case 'auth/internal-error':
+      return 'Sign-in session failed. Please try again — if this persists, use Chrome without extensions.'
     default:
       return code ? `Sign-in failed (${code}). Please try again.` : 'Sign-in failed. Please try again.'
   }
