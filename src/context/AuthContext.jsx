@@ -10,6 +10,7 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { auth, db, googleProvider, isEmailAllowed, isFirebaseConfigured } from '../lib/firebase'
 import {
   friendlyAuthError,
+  isIgnorableRedirectError,
   prefersRedirectSignIn,
   shouldRetryWithRedirect,
 } from '../lib/authSignIn'
@@ -76,7 +77,7 @@ export function AuthProvider({ children }) {
         setError(null)
       } catch (err) {
         if (!active) return
-        if (err?.code === 'auth/popup-closed-by-user') return
+        if (isIgnorableRedirectError(err)) return
         console.error('Redirect sign-in error:', err)
         setError(friendlyAuthError(err))
       }
@@ -131,7 +132,7 @@ export function AuthProvider({ children }) {
 
       await signInWithPopup(auth, googleProvider)
     } catch (err) {
-      if (err?.code === 'auth/popup-closed-by-user') return
+      if (err?.code === 'auth/popup-closed-by-user' || isIgnorableRedirectError(err)) return
 
       if (shouldRetryWithRedirect(err)) {
         try {
