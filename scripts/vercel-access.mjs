@@ -46,11 +46,18 @@ export function envMapForTarget(envs, target = 'production') {
   const map = {}
   for (const entry of envs) {
     if (!entry.target?.includes(target)) continue
-    if (map[entry.key] === undefined) {
-      map[entry.key] = entry.value ?? ''
+    const prev = map[entry.key]
+    const prevTs = prev?.updatedAt || prev?.createdAt || 0
+    const nextTs = entry.updatedAt || entry.createdAt || 0
+    if (prev === undefined || nextTs >= prevTs) {
+      map[entry.key] = entry
     }
   }
-  return map
+  const out = {}
+  for (const [key, entry] of Object.entries(map)) {
+    out[key] = entry.value ?? ''
+  }
+  return out
 }
 
 export async function loadVercelAccessEnvMap() {

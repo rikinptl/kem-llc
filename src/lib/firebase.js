@@ -49,14 +49,10 @@ if (isFirebaseConfigured) {
 
 export { app, auth, db, googleProvider }
 
-import { isAllowedEmail as checkAllowedEmail } from './roles'
+import { isAllowedEmail as checkAllowedEmail, getAllowedEmails as getPortalAllowedEmails } from './roles'
 
 export function getAllowedEmails() {
-  const raw = import.meta.env.VITE_ALLOWED_EMAILS || ''
-  return raw
-    .split(',')
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean)
+  return getPortalAllowedEmails()
 }
 
 export function isEmailAllowed(email) {

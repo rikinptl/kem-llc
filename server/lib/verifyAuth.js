@@ -21,7 +21,12 @@ export function getColleagueEmailsServer() {
     process.env.COLLEAGUE_EMAILS?.trim() ||
     process.env.VITE_COLLEAGUE_EMAILS?.trim() ||
     ''
-  return parseEmailList(raw)
+  const colleagues = parseEmailList(raw)
+  if (colleagues.length > 0) return colleagues
+
+  const allowed = parseEmailList(process.env.VITE_ALLOWED_EMAILS || '')
+  const owners = getOwnerEmailsServer()
+  return allowed.filter((email) => !owners.includes(email))
 }
 
 function getFirebaseApiKey() {

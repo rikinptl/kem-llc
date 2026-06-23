@@ -14,8 +14,16 @@ export function getOwnerEmails() {
 }
 
 export function getColleagueEmails() {
-  const raw = import.meta.env.VITE_COLLEAGUE_EMAILS || ''
-  return parseList(raw)
+  const raw = import.meta.env.VITE_COLLEAGUE_EMAILS?.trim()
+  if (raw) return parseList(raw)
+
+  const allowed = parseList(import.meta.env.VITE_ALLOWED_EMAILS || '')
+  const owners = getOwnerEmails()
+  return allowed.filter((email) => !owners.includes(email))
+}
+
+export function getAllowedEmails() {
+  return [...new Set([...getOwnerEmails(), ...getColleagueEmails()])]
 }
 
 export function isOwnerEmail(email) {
@@ -43,6 +51,5 @@ export function getLoginDestination(email) {
 
 export function isAllowedEmail(email) {
   if (!email) return false
-  const list = [...new Set([...getOwnerEmails(), ...getColleagueEmails()])]
-  return list.includes(email.toLowerCase())
+  return getAllowedEmails().includes(email.toLowerCase())
 }
