@@ -1,10 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import {
-  browserLocalPersistence,
-  browserPopupRedirectResolver,
-  GoogleAuthProvider,
-  initializeAuth,
-} from 'firebase/auth'
+import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -30,16 +25,13 @@ let googleProvider = null
 
 if (isFirebaseConfigured) {
   app = initializeApp(firebaseConfig)
-  auth = initializeAuth(app, {
-    persistence: browserLocalPersistence,
-    popupRedirectResolver: browserPopupRedirectResolver,
-  })
+  auth = getAuth(app)
   db = getFirestore(app)
   googleProvider = new GoogleAuthProvider()
   googleProvider.setCustomParameters({ prompt: 'select_account' })
 }
 
-export { app, auth, db, googleProvider, browserPopupRedirectResolver }
+export { app, auth, db, googleProvider }
 
 import { isAllowedEmail as checkAllowedEmail } from './roles'
 

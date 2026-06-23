@@ -2,14 +2,12 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 import {
   getRedirectResult,
   onAuthStateChanged,
-  signInWithPopup,
   signInWithRedirect,
   signOut as firebaseSignOut,
 } from 'firebase/auth'
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import {
   auth,
-  browserPopupRedirectResolver,
   db,
   googleProvider,
   isEmailAllowed,
@@ -19,7 +17,6 @@ import {
   friendlyAuthError,
   isIgnorableRedirectError,
   prefersRedirectSignIn,
-  shouldRetryWithRedirect,
 } from '../lib/authSignIn'
 
 const AuthContext = createContext(null)
@@ -73,22 +70,23 @@ export function AuthProvider({ children }) {
       redirectHandled.current = true
 
       try {
-        const result = await getRedirectResult(auth, browserPopupRedirectResolver)
-        if (!active || !result?.user) return
-
-        const check = await rejectUnauthorizedUser(result.user)
-        if (!check.ok) {
-          setUser(null)
-          setError(check.error)
-          return
-        }
-
-        await persistUserProfile(result.user)
-        setUser(result.user)
-        setError(null)
-      } catch (err) {
+        const result = await getRedirectResult(auth)
         if (!active) return
-        if (isIgnorableRedirectError(err)) return
+
+        if (result?.user) {
+          const check = await rejectUnauthorizedUser(result.user)
+          if (!check.ok) {
+            setUser(null)
+            setError(check.error)
+            return
+          }
+
+          await persistUserProfile(result.user)
+          setUser(result.user)
+          setError(null)
+        }
+      } catch (err) {
+        if (!active || isIgnorableRedirectError(err)) return
         console.error('Redirect sign-in error:', err)
         setError(friendlyAuthError(err))
       }
@@ -109,10 +107,13 @@ export function AuthProvider({ children }) {
           return
         }
         await persistUserProfile(firebaseUser)
+        setUser(firebaseUser)
+        setError(null)
+        setLoading(false)
+        return
       }
 
-      setUser(firebaseUser)
-      setError(null)
+      setUser(null)
       setLoading(false)
     })
 
@@ -131,42 +132,16 @@ export function AuthProvider({ children }) {
 
     setError(null)
 
-    const redirectSignIn = async () => {
-      await signInWithRedirect(auth, googleProvider, browserPopupRedirectResolver)
-    }
-
     try {
       if (prefersRedirectSignIn()) {
-        await redirectSignIn()
+        await signInWithRedirect(auth, googleProvider)
         return
       }
 
+      const { signInWithPopup } = await import('firebase/auth')
       await signInWithPopup(auth, googleProvider)
     } catch (err) {
-      if (err?.code === 'auth/popup-closed-by-user' || isIgnorableRedirectError(err)) return
-
-      if (shouldRetryWithRedirect(err)) {
-        try {
-          await redirectSignIn()
-          return
-        } catch (redirectErr) {
-          console.error('Redirect fallback error:', redirectErr)
-          setError(friendlyAuthError(redirectErr))
-          return
-        }
-      }
-
-      if (err?.code === 'auth/internal-error') {
-        try {
-          await redirectSignIn()
-          return
-        } catch (redirectErr) {
-          console.error('Redirect fallback after internal-error:', redirectErr)
-          setError(friendlyAuthError(redirectErr))
-          return
-        }
-      }
-
+      if (isIgnorableRedirectError(err) || err?.code === 'auth/popup-closed-by-user') return
       console.error('Sign-in error:', err)
       setError(friendlyAuthError(err))
     }
