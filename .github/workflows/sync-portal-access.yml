@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: read
-  secrets: write
 
 concurrency:
   group: portal-access-sync
@@ -40,4 +39,5 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_GH_SECRETS: '1'
         run: node scripts/sync-portal-access.mjs

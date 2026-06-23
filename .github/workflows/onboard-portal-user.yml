@@ -35,7 +35,6 @@ on:
 permissions:
   contents: read
   actions: read
-  secrets: write
 
 concurrency:
   group: portal-onboard
@@ -66,6 +65,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_GH_SECRETS: '1'
         run: |
           node scripts/portal-access.mjs "${{ inputs.action }}" \
             --email "${{ inputs.email }}" \
