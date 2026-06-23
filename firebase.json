@@ -2,5 +2,19 @@
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "KEM",
+        "supportEmail": "kem.sales.us@gmail.com",
+        "authorizedRedirectUris": [
+          "https://kemtrade.us",
+          "https://www.kemtrade.us",
+          "https://kem-llc-web.firebaseapp.com",
+          "http://localhost"
+        ]
+      }
+    }
   }
 }
