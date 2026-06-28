@@ -2,6 +2,51 @@ const SINGLE_RE = /Scrape \+ deploy (.+) in (.+)/i
 const PARALLEL_RE = /Parallel scrape \((\d+) max\) in (.+)/i
 const PENDING_RE = /^Deploy pending leads$/i
 
+export const DEPLOY_WORKFLOW_FILE = 'deploy.yml'
+
+export function getGithubRepo() {
+  return process.env.OWNER_GITHUB_REPO || process.env.GITHUB_REPO || 'rikinptl/web-auto'
+}
+
+export function getGithubToken() {
+  return process.env.OWNER_GITHUB_TOKEN || process.env.GITHUB_TOKEN || ''
+}
+
+export function githubHeaders(token = getGithubToken()) {
+  return {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  }
+}
+
+export async function githubRequest(path, { method = 'GET', body } = {}) {
+  const token = getGithubToken()
+  if (!token) throw new Error('GITHUB_TOKEN is not set')
+
+  const repo = getGithubRepo()
+  const url = path.startsWith('http')
+    ? path
+    : `https://api.github.com/repos/${repo}${path.startsWith('/') ? path : `/${path}`}`
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      ...githubHeaders(token),
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  })
+
+  if (!res.ok) {
+    const text = await res.text()
+    throw new Error(`GitHub API ${res.status}: ${text.slice(0, 300)}`)
+  }
+
+  if (res.status === 204) return null
+  return res.json()
+}
+
 function parseRunName(name) {
   if (PENDING_RE.test(name)) {
     return { niche: null, city: null, runMode: 'pending', maxResults: null }
@@ -33,25 +78,7 @@ function durationSec(start, end) {
 }
 
 export async function fetchWorkflowRuns(limit = 40) {
-  const token = process.env.OWNER_GITHUB_TOKEN || process.env.GITHUB_TOKEN
-  const repo = process.env.OWNER_GITHUB_REPO || process.env.GITHUB_REPO || 'rikinptl/web-auto'
-  if (!token) throw new Error('GITHUB_TOKEN is not set')
-
-  const url = `https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/runs?per_page=${limit}`
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-  })
-
-  if (!res.ok) {
-    const body = await res.text()
-    throw new Error(`GitHub API ${res.status}: ${body.slice(0, 200)}`)
-  }
-
-  const data = await res.json()
+  const data = await githubRequest(`/actions/workflows/${DEPLOY_WORKFLOW_FILE}/runs?per_page=${limit}`)
   return (data.workflow_runs ?? []).map((run) => ({
     id: run.id,
     name: run.name,

@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path'
 import { fetchWorkflowRuns } from './github.js'
 import { buildAiCostStats } from './deepseek.js'
 import { fetchLeadsFromSheet } from './sheets.js'
+import { getPipelineStatus } from './pipeline.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const markets = JSON.parse(readFileSync(join(__dirname, '../../data/markets.json'), 'utf8'))
@@ -122,6 +123,13 @@ export async function getDashboardData() {
   const deployOrg = process.env.DEPLOY_ORG || 'kem-llc'
   const aiCost = await buildAiCostStats(stats.liveSites)
 
+  let pipeline = { configured: false, enabled: null }
+  try {
+    pipeline = await getPipelineStatus()
+  } catch (e) {
+    errors.push(e instanceof Error ? e.message : 'Failed to load pipeline status')
+  }
+
   const reached = (l) => Boolean(l.reachedOut?.trim()) && l.reachedOut.trim().toUpperCase() !== 'N'
   const outreach = {
     reached: leads.filter(reached).length,
@@ -154,6 +162,7 @@ export async function getDashboardData() {
     aiCost,
     outreach,
     marketsTotal,
+    pipeline,
     links: {
       sheets: process.env.GOOGLE_SHEETS_URL ?? null,
       actions:

@@ -18,6 +18,7 @@ import OwnerRunsTable from '../components/owner/OwnerRunsTable'
 import OwnerMarketGrid from '../components/owner/OwnerMarketGrid'
 import OwnerAiPanel from '../components/owner/OwnerAiPanel'
 import SalesQueuePanel from '../components/sales/SalesQueuePanel'
+import PipelineToggle from '../components/owner/PipelineToggle'
 
 const TABS = [
   { id: 'overview', label: 'Overview' },
@@ -55,6 +56,7 @@ export default function OwnerDashboard() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [pipelineEnabled, setPipelineEnabled] = useState(null)
 
   const loadDashboard = useCallback(async () => {
     if (!auth?.currentUser) return
@@ -74,6 +76,7 @@ export default function OwnerDashboard() {
       }
       if (!res.ok) throw new Error(json.error || 'Failed to load dashboard')
       setData(json)
+      setPipelineEnabled(json.pipeline?.enabled ?? null)
     } catch (e) {
       setError(e.message || 'Failed to load dashboard')
     } finally {
@@ -139,6 +142,21 @@ export default function OwnerDashboard() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
+              {data ? (
+                <PipelineToggle
+                  initialEnabled={pipelineEnabled}
+                  configured={data.pipeline?.configured ?? false}
+                  workflowUrl={data.pipeline?.workflowUrl ?? data.links?.actions}
+                  onStatusChange={(next) => {
+                    setPipelineEnabled(next)
+                    window.setTimeout(loadDashboard, 3000)
+                  }}
+                />
+              ) : (
+                <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-400">
+                  Pipeline…
+                </span>
+              )}
               <HeaderLink href={data?.links?.sheets}>
                 <Sheet className="w-3.5 h-3.5" />
                 Google Sheet
